@@ -11,6 +11,10 @@ function init(){
 	window.addEventListener( "keydown", handleKeydown );
 	window.addEventListener( "keyup", handleKeyup );
 	canvas.addEventListener( "mousedown", handleMousedown );
+	debug1 = document.getElementById( "debug1" );
+	debug2 = document.getElementById( "debug2" );
+	debug3 = document.getElementById( "debug3" );
+	debug4 = document.getElementById( "debug4" );
 	setInterval( logicUpdate, 1000/20 );
 	renderUpdate();
 }
