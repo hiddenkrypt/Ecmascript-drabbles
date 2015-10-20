@@ -1,40 +1,44 @@
-var WIDTH = 300,
-	HEIGHT = 200,
-	canvas = {},
-	ctx = {};
-
-function init(){
-	canvas = document.getElementById( 'c' );
-	ctx = canvas.getContext( "2d" );
-	canvas.style.width = canvas.width = WIDTH;
-	canvas.style.height = canvas.height = HEIGHT;
-	window.addEventListener( "keydown", handleKeydown );
-	window.addEventListener( "keyup", handleKeyup );
-	canvas.addEventListener( "mousedown", handleMousedown );
-	debug1 = document.getElementById( "debug1" );
-	debug2 = document.getElementById( "debug2" );
-	debug3 = document.getElementById( "debug3" );
-	debug4 = document.getElementById( "debug4" );
-	setInterval( logicUpdate, 1000/20 );
-	renderUpdate();
-}
-
-function renderUpdate(){
-	ctx.fillStyle = "white";
-	ctx.fillRect( 0, 0, WIDTH, HEIGHT );
+"use strict";
+var code = ( function newDrabbleCode(){
+	var c = {
+		settings:  {},
+		init:	function(){},
+		start: 	function(){},
+	};
 	
-	requestAnimationFrame( renderUpdate );
-}
+	c.settings = {
+		debugLevel: drabble.settings.debugLevels.MAX,
+		canvas:{
+			MODE: drabble.settings.canvasModes.BOX
+			,WIDTH: 600
+			,HEIGHT: 400
+		}		
+	};
+	c.init = function(){
+		 drabble.loader.begin();
+		var myID1 = drabble.loader.registerItem();
+		setTimeout( function(){ drabble.loader.clearItem( myID1 ); }, 1000 );
+		engine.init();
+	};
+	c.start = function(){
+		engine.postInit();
+		engine.test();
+		engine.start();
+	};
+	return c;
+})();
 
-function logicUpdate(){}
 
-function handleKeyup( event ){}
-function handleKeydown( event ){}
-function handleMousedown( event ){}
-
-function debugUpdate(){
-	debug1.innerHTML = "";
-	debug2.innerHTML = "";
-	debug3.innerHTML = "";
-	debug4.innerHTML = "";
-}
+var engine = engine || (function(){
+	var e = {
+		init: function(){},
+		postInit: function(){},
+		test: function(){},
+		start: function(){}
+	};
+	return e;
+	
+	
+	
+	
+})();

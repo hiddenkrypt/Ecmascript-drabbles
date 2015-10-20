@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>conway with controls</title>
+		<script src="conway.js"></script>
+		<style>
+			*{
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				cursor: default;
+			}
+		</style>
+	</head>
+	<body onload="init('control')">
+		<div id="controlPanel">
+			<input type="button" value="Tick" onclick="tick()">
+			<input type="button" value="Randomize" onclick="randomFill()">
+			<input type="button" value="Clear" onclick="clearGrid()">
+			<input type="button" value="Run" onclick="startSimulation()">
+			<input type="button" value="Stop" onclick="stopSimulation()">
+			Tickrate: 
+				<input id="ratebox" maxlength=5 size=1 onchange="boxUpdateTickRate()">
+				<input id="rateslide" type="range" min=10 max=2000 onchange="slideUpdateTickRate()">
+
+		</div>
+		<canvas id='c' style="Border: 1px solid black">
+		</canvas>
+	</body>
+</html>

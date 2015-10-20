@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Derf</title>
+		<style>
+			*{
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			}
+		</style>
+		<script src="timbre/timbre.js"></script>
+		<script src="synthgames.js"></script>
+	</head>
+	<body onload="init()">
+		<canvas id="c" style="border:1px solid #000000;float:left">
+		</canvas><br>
+		<div id="box" style="color:000; border:1px solid #000000; "> 
+			Song Title: <input type="text" id="tit"><br>
+			BPM: <input type="text" id="bpm" value="120"><br>
+			Pattern:
+			<select disabled id="patternGranularity" onchange="">
+				<option value=1>4 bars, 1/8th notes</option>
+				<option value=1>2 bars, 1/16th notes</option>
+				<option value=1>1 bar, 1/32nd notes</option>
+			
+			</select>
+			<div style="text-align:center;"><input type="button" id="play" value="Play" onclick="play()"></div>
+			<input type="button" value="Sine" onclick="setWaveForm('sin')">
+			<input type="button" value="Square" onclick="setWaveForm('square')">
+			<input type="button" value="Saw" onclick="setWaveForm('saw')"><br>
+			Root: <select disabled id ="root" onchange="updateRoot()">
+				<option value = 261.63>C4</option>
+				<option value = 277.18>C#/Db4</option>
+				<option value = 293.66>D4</option>
+				<option value = 311.13>D#/Eb4</option>
+				<option value = 329.63>E4</option>
+				<option value = 349.23>F4</option>
+				<option value = 369.99>F#/Gb4</option>
+				<option value = 392.00>G4</option>
+				<option value = 415.30>G#/Ab4</option>
+				<option value = 440.00>A4</option>
+				<option value = 466.16>A#/Bb4</option>
+				<option value = 493.88>B4</option>
+				<option value = 523.25>C5</option>
+			</select>
+		</div>
+	</body>
+</html>
