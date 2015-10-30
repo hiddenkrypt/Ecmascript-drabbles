@@ -43,7 +43,10 @@ function start(){
 		bod: [],
 		dBuffer: null
 	};
-	food = [];
+	food = [{
+			x: Math.floor(Math.random()*gridMax),
+			y: Math.floor(Math.random()*gridMax)
+		}];
 	plant = true;
 	snake.bod.push({x:Math.floor(gridMax/2), y:Math.floor(gridMax/2)});
 	snake.bod.push({x:Math.floor(gridMax/2)+1, y:Math.floor(gridMax/2)});
@@ -83,6 +86,9 @@ function spawnFood(){
 }
 function logicUpdate(){
 	//eventUpdate();
+	if( food.length <= 0 ){
+		start();
+	}
 	if(keyPressed){
 		if(keyPressed.name != snake.direction.opposite){
 			snake.direction = keyPressed;
