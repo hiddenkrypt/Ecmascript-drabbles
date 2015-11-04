@@ -30,8 +30,7 @@ function init(){
 	ctx = document.getElementById("c").getContext("2d");
 	document.body.addEventListener("keydown", function(e) {
 		react(interpretKeypress(e));
-		//if(currentMap !== 0)
-			updateCamera();
+		updateCamera();
 		renderUpdate();
 	});	
 	
@@ -111,17 +110,9 @@ function renderUpdate(){
 			else if(player.x==i+camera.x && player.y==j+camera.y){
 				ctx.fillText("@", (i)*spacing, (j)*spacing);
 			}
-			else if(maps[currentMap][j+camera.y][i+camera.x] === 1){
-				ctx.fillText("#", (i)*spacing, (j)*spacing);
-			}
-			else if(maps[currentMap][j+camera.y][i+camera.x] === 0){
-				ctx.fillText(".", (i)*spacing, (j)*spacing);
-			}
-			else if(maps[currentMap][j+camera.y][i+camera.x] === 2){
-				ctx.fillText("<", (i)*spacing, (j)*spacing);
-			}
-			else if(maps[currentMap][j+camera.y][i+camera.x] === 3){
-				ctx.fillText(">", (i)*spacing, (j)*spacing);
+			else {
+				var charc = Tiles[maps[currentMap][j+camera.y][i+camera.x]].character;
+				ctx.fillText( charc, i*spacing, j*spacing );
 			}
 		}
 	}
