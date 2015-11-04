@@ -15,7 +15,7 @@ var Dice = (function(){
 	
 	return { 
 		roll: function( diceString ){
-			if(!diceString.match(/^[0-9]+(d[0-9]+?)?(\+-?[0-9]+(d[0-9]+)?)*$/) ){
+			if( !diceString.match(/^[0-9]+(d[0-9]+?)?(\+-?[0-9]+(d[0-9]+)?)*$/) ){
 				throw "Invalid Dice String";
 			}
 			var a = diceString.split("+").map( e => rollElement(e) )
