@@ -1,0 +1,25 @@
+<html><head>
+<script  src="dice.js"></script>
+<script>
+var rolls = [];
+var d = new Dice();
+function roll(){
+	var result;
+	try{
+		result = d.d(document.getElementById("dice").value)
+	}
+	catch (e) {
+		result = e;
+	}
+	rolls.unshift( document.getElementById("dice").value + " ::= " + result );
+	if(rolls.length >= 15){
+		rolls.pop();
+	}
+	document.getElementById("out").innerHTML =  rolls.join("<br>");
+}
+</script>
+</head>
+<body>
+<input id="dice">
+<button onclick="roll()">Roll!</button>
+<div id="out"></div>
