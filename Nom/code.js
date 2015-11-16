@@ -32,8 +32,8 @@ var code = (function newDrabbleCode() {
 
 var engine = engine || (function () {
 		var settings = {
-			MAP_WIDTH : 4098,
-			MAP_HEIGHT : 4098
+			MAP_WIDTH : 600,
+			MAP_HEIGHT : 400
 		};
 		var bits = [];
 		var keyStates = [];
@@ -55,7 +55,7 @@ var engine = engine || (function () {
 					keyStates[e.keyCode] = false;
 				});
 				makePlayer();
-				for (var i = 0; i < 299; i++) {
+				for (var i = 0; i < 28; i++) {
 					addBit();
 				}
 			},
@@ -110,9 +110,11 @@ var engine = engine || (function () {
 			}
 			player.draw = function( ctx ){
 				ctx.fillStyle = "#ff5310";
-				ctx.strokeStyle = "#ffff00";
-				ctx.fillRect(player.x, player.y, player.size, player.size);
-				ctx.strokeRect(player.x, player.y, player.size, player.size);			
+				ctx.strokeStyle = "#ffff00";	
+				ctx.beginPath();
+				ctx.arc(player.x, player.y, player.size, 0, 2*Math.PI, false);
+				ctx.stroke();
+				ctx.fill();				
 			}
 			
 		}
@@ -146,17 +148,21 @@ var engine = engine || (function () {
 				},
 				draw: function( ctx ){				
 					ctx.fillStyle = "#696969";
-					ctx.strokeStyle = "#000000";				
-					ctx.fillRect(this.x, this.y, this.size, this.size);
-					ctx.strokeRect(this.x, this.y, this.size, this.size);
+					ctx.strokeStyle = "#000000";	
+					ctx.beginPath();
+					ctx.arc(this.x, this.y, this.size, 0, 2*Math.PI, false);
+					ctx.stroke();
+					ctx.fill();			
 				}
 			};
 		}
 		function collision(bitA, bitB) {
 			return (
 				Math.sqrt(
-					(bitA.x - bitB.x) * (bitA.x - bitB.x)
-					 + (bitA.y - bitB.y) * (bitA.y - bitB.y)) <= bitA.size + bitB.size);
+					(bitA.x + bitA.size/2 - bitB.x - bitB.size/2) * (bitA.x + bitA.size/2 - bitB.x - bitB.size/2)
+					 + (bitA.y + bitA.size/2  - bitB.y - bitB.size/2 ) * (bitA.y + bitA.size/2  - bitB.y - bitB.size/2 )
+				) <= bitA.size + bitB.size
+			);
 		}
 		function eat(bitA, bitB) {
 			if (collision(bitA, bitB)) {
