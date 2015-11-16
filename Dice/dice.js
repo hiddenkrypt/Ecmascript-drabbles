@@ -9,9 +9,6 @@ var Dice = (function(){
 		}
 		return ( ministring[0] == '-' )? -result : result;
 	}
-	function rollElementMin( aString ){
-			
-	}
 	return { 
 		roll: function( diceString ){
 			if( !diceString.match(/^-?[0-9]+(d[0-9]+?)?(\+-?[0-9]+(d[0-9]+)?)*$/) ){
@@ -19,6 +16,6 @@ var Dice = (function(){
 			}
 			return diceString.split("+").map( e => rollElement(e) ).reduce( (b,a) => a+b );
 		},
-		d: function d(s){return s.split("+").map(e=>function(t){var m=Math,x=m.abs(t.split("d")[0]),y=t.split("d")[1]>>0,r=0;while(x--)r+=m.floor((m.random()*y)+1);return (t[0]=='-')?-r:r;}(e)).reduce((b,a)=>a+b);} //code golf 206
+		d: function d(s){return s.split("+").map(e=>function(t){var m=Math,x=m.abs(t.split("d")[0]),y=t.split("d")[1]>>0,r=0;while(x--)r+=m.floor((m.random()*y)+1);return(t[0]=='-')?-r:r;}(e)).reduce((b,a)=>a+b);} //code golf 202
 	};
 });
