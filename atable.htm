@@ -17,7 +17,9 @@
 	
 </style>
 <script type="text/javascript">
-for (var i=0; i<Math.pow(2,10); i++) document.writeln ((i%32?'':'<p>') + i + ' : ' + String.fromCharCode (i) + '<br>');
+var count = 256;
+var colLength = 32;
+for (var i=0; i<count; i++) document.writeln ((i%colLength?'':'<p>') + i + ' : ' + String.fromCharCode (i) + '<br>');
 </script>
 </head>
 <body>
@@ -27,28 +29,34 @@ for (var i=0; i<Math.pow(2,10); i++) document.writeln ((i%32?'':'<p>') + i + ' :
 <!--  @O!Gu3stWL  -->
 <p>ઠܘઠ <br> ఠ_ఠ <br> ಠ_ಠ <br>ਊnਊ<br>థగథ
 <table border = 1>
-<tr><td>♈</td><td>Aradia</td><td>Damara</td><td>Megido</td><td>Handmaid</td><td>ApocalypseArisen</td></tr>
-<tr><td>♉</td><td>Tavros</td><td>Ruffio</td><td>Nitram</td><td>Summoner</td><td>adiosToreador</td></tr>
-<tr><td>♊</td><td>Sollux</td><td>Mituna</td><td>Captor</td><td>Helmsman</td><td>twinArmageddons</td></tr>
-<tr><td>♋</td><td>Karkat</td><td>Kankri</td><td>Vantas</td><td>Sufferer</td><td>carcinoGeneticicist</td></tr>
-<tr><td>♌</td><td>Nepeta</td><td>Mewlin</td><td>Leijon</td><td>Disciple</td><td>arsenicCatnip</td></tr>
-<tr><td>♍</td><td>Kanaya</td><td>Porrim</td><td>Maryam</td><td>Dolorosa</td><td>grimAuxiliatrix</td></tr>
-<tr><td>♎</td><td>Terezi</td><td>Latula</td><td>      </td><td>Neophyte</td><td>gallowsCalibrator</td></tr>
-<tr><td>♏</td><td>Vriska</td><td>Aranea</td><td>Serket</td><td>Mindfang</td><td>arachnidsGrip</td></tr>
-<tr><td>♐</td><td>Equius</td><td>Horuss</td><td>Zahaak</td><td>        </td><td>centaursTesticle</td></tr>
-<tr><td>♑</td><td>Gamzee</td><td>      </td><td>Makara</td><td>        </td><td>terminallyCapricious</td></tr>
-<tr><td>♒</td><td>Eridan</td><td>Cronus</td><td>Ampora</td><td>Dualscar</td><td>caligulasAquarium</td></tr>
-<tr><td>♓</td><td>Feferi</td><td>Meenah</td><td>Peixis</td><td>Condesce</td><td>cuttlefishCuller</td></tr>
-<tr><td>D</td><td>Dave</td><td>Dirk</td><td>Strider</td><td> Bro </td><td>TurntechGodhead / tt</td></tr>
-<tr><td>R</td><td>Rose</td><td>Roxy</td><td>Lalonde</td><td> Mom </td><td>tentacleTherapist / tipsyGnostalgic</td></tr>
-<tr><td>J</td><td>John</td><td>Jane</td><td>Egbert/Crocker</td><td>Dad</td><td>ghostlyTrickster / gg</td></tr>
-<tr><td>J</td><td>Jade</td><td>Jake</td><td>Harley/English</td><td>Pop</td><td>gardenGnostic / gt</td></tr>
+<tr style="color:#A10000">	<td>♈</td><td>Aradia</td>	<td>Damara</td>	<td>Megido</td>	<td>Handmaid</td>	<td>ApocalypseArisen</td></tr>
+<tr>						<td>♉</td><td>Tavros</td>	<td>Ruffio</td>	<td>Nitram</td>	<td>Summoner</td>	<td>adiosToreador</td></tr>
+<tr>						<td>♊</td><td>Sollux</td>	<td>Mituna</td>	<td>Captor</td>	<td>Helmsman</td>	<td>twinArmageddons</td></tr>
+<tr style="color:#696969">	<td>♋</td><td>Karkat</td>	<td>Kankri</td>	<td>Vantas</td>	<td>Sufferer</td>	<td>carcinoGeneticicist</td></tr>
+<tr>						<td>♌</td><td>Nepeta</td>	<td>Mewlin</td>	<td>Leijon</td>	<td>Disciple</td>	<td>arsenicCatnip</td></tr>
+<tr style="color:#008141">	<td>♍</td><td>Kanaya</td>	<td>Porrim</td>	<td>Maryam</td>	<td>Dolorosa</td>	<td>grimAuxiliatrix</td></tr>
+<tr>						<td>♎</td><td>Terezi</td>	<td>Latula</td>	<td>Pyrope</td>	<td>Neophyte</td>	<td>gallowsCalibrator</td></tr>
+<tr>						<td>♏</td><td>Vriska</td>	<td>Aranea</td>	<td>Serket</td>	<td>Mindfang</td>	<td>arachnidsGrip</td></tr>
+<tr style="color:#0000a1">	<td>♐</td><td>Equius</td>	<td>Horuss</td>	<td>Zahaak</td>	<td>E%ecutor</td>	<td>centaursTesticle</td></tr>
+<tr>						<td>♑</td><td>Gamzee</td>	<td>      </td>	<td>Makara</td>	<td>   GHB  </td>	<td>terminallyCapricious</td></tr>
+<tr>						<td>♒</td><td>Eridan</td>	<td>Cronus</td>	<td>Ampora</td>	<td>Dualscar</td>	<td>caligulasAquarium</td></tr>
+<tr>						<td>♓</td><td>Feferi</td>	<td>Meenah</td>	<td>Peixis</td>	<td>Condesce</td>	<td>cuttlefishCuller</td></tr>
+<tr>						<td>D</td><td>Dave</td>		<td>Dirk</td>	<td>Strider</td><td> Bro </td>		<td>TurntechGodhead</td></tr>
+<tr>						<td>R</td><td>Rose</td>		<td>Roxy</td>	<td>Lalonde</td><td> Mom </td>		<td>tentacleTherapist</td></tr>
+<tr>						<td>J</td><td>John</td>		<td>Jane</td>	<td>Egbert</td>	<td>Dad</td>		<td>ghostlyTrickster (ectoBiologist)</td></tr>
+<tr>						<td>J</td><td>Jade</td>		<td>Jake</td>	<td>Harley</td>	<td>PopPop</td>		<td>gardenGnostic</td></tr>
+<tr>						<td>D</td><td>Dirk</td>		<td>Dave</td>	<td>Strider</td><td> Bro </td>		<td>timaeusTestified</td></tr>
+<tr style="color:#ff6ff2">	<td>R</td><td>Roxy</td>		<td>Rose</td>	<td>Lalonde</td><td> Mom </td>		<td>tipsyGnostalgic</td></tr>
+<tr>						<td>J</td><td>Jane</td>		<td>John</td>	<td>Crocker</td><td> ? </td>		<td>gg</td></tr>
+<tr>						<td>J</td><td>Jake</td>		<td>Jade</td>	<td>English</td><td> ? </td>		<td>gt</td></tr>
+<tr style="color:#929292">	<td>C</td><td>Calliope</td>	<td> - </td>	<td> - </td>	<td> - </td>		<td> uranianUmbra </td></tr>
+<tr style="color:#232323">	<td>?</td><td> ? </td>		<td> - </td>	<td> - </td>	<td> - </td>		<td> undyingUmbrage </td></tr>
 </table>
 <table>
 <tr><td> </td><td>C</td><td>A</td><td>T</td><td>G</td></tr>
-<tr><td>C</td><td>♓</td><td>♒</td><td>♐</td><td>♋</td></tr>
-<tr><td>A</td><td>♌</td><td>♈</td><td>♉</td><td>♏</td></tr>
-<tr><td>T</td><td>♑</td><td>♊</td><td>R</td><td>D</td></tr>
-<tr><td>G</td><td>♎</td><td>♍</td><td>J</td><td>J</td></tr>
+<tr><td>C</td><td>♓</td><td>♒</td><td>♐</td><td style="color:#696969">♋</td></tr>
+<tr><td>A</td><td>♌</td><td style="color:#A10000">♈</td><td>♉</td><td>♏</td></tr>
+<tr><td>T</td><td>♑</td><td>♊</td><td>R</td><td style="color:#ff6ff2">D</td></tr>
+<tr><td>G</td><td>♎</td><td style="color:#008141">♍</td><td>J</td><td>J</td></tr>
 </table>
  </body></html>
