@@ -32,8 +32,8 @@ var code = (function newDrabbleCode() {
 
 var engine = engine || (function () {
 		var settings = {
-			MAP_WIDTH : 1200,
-			MAP_HEIGHT : 800
+			MAP_WIDTH : 4098,
+			MAP_HEIGHT : 4098
 		};
 		var bits = [];
 		var keyStates = [];
@@ -50,7 +50,7 @@ var engine = engine || (function () {
 				});
 				makeCamera();
 				makePlayer();
-				for (var i = 0; i < 255; i++) {
+				for (var i = 0; i < 500; i++) {
 					addBit();
 				}
 				//setInterval(reset, 3000 );
@@ -74,12 +74,14 @@ var engine = engine || (function () {
 			var ctx = drabble.ctx;
 			ctx.fillStyle = "#f0f0ff";
 			ctx.fillRect(0, 0, code.settings.canvas.WIDTH, code.settings.canvas.HEIGHT);
-			ctx.fillStyle = "#CACAFF";
-			for(var i = 0;  i < 255; i++){
+			ctx.fillStyle = "#D1D1FF";
+			for(var i = 1;  i < 255; i++){
 				ctx.fillRect((settings.MAP_WIDTH*2/i) - camera.x, 0, 1, code.settings.canvas.HEIGHT);
+				ctx.fillRect(settings.MAP_WIDTH- (settings.MAP_WIDTH*2/i) - camera.x, 0, 1, code.settings.canvas.HEIGHT);
 				ctx.fillRect(0, (settings.MAP_HEIGHT*2/i) - camera.y, code.settings.canvas.WIDTH, 1);
+				ctx.fillRect(0,settings.MAP_HEIGHT- (settings.MAP_HEIGHT*2/i) - camera.y, code.settings.canvas.WIDTH, 1);
 			}
-			ctx.fillStyle = "#9797FF";
+			ctx.fillStyle = "#B1B1FF";
 				ctx.fillRect(settings.MAP_WIDTH - camera.x, 0 - camera.y, 2, settings.MAP_HEIGHT);
 				ctx.fillRect(0 - camera.x, 					0 - camera.y, 2, settings.MAP_HEIGHT);
 				ctx.fillRect(0 - camera.x, 					0 - camera.y, settings.MAP_WIDTH, 2);
@@ -87,7 +89,7 @@ var engine = engine || (function () {
 			
 			bits.forEach(function (bit) {
 				if (bit.size === 0) {
-					//bits.remove(bit);
+					bits.splice(bits.indexOf(bit),1);
 				}
 				bit.tick();
 				bit.draw(ctx);
@@ -140,22 +142,24 @@ var engine = engine || (function () {
 		}
 		function makeCamera(){
 			camera = {
+				zoom:1,
 				x: 0,
 				y: 0,
 				w: code.settings.canvas.WIDTH,
 				h: code.settings.canvas.HEIGHT,
 				bounds: .2,
 				tick: function(){
+					
 					while( player.x+player.size > this.x+this.w*0.8 ){
 						this.x++;
 					}
-					while( player.x < this.x*1.2 ){
+					while( player.x < this.x+this.w*0.2 ){
 						this.x--;
 					}
 					while( player.y+player.size > this.y+this.h*0.8 ){
 						this.y++;
 					}
-					while( player.y < this.y*1.2 ){
+					while( player.y < this.y+this.h*0.2 ){
 						this.y--;
 					}
 				}
