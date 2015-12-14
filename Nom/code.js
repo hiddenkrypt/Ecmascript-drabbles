@@ -19,7 +19,7 @@ var code = (function newDrabbleCode() {
 		var myID1 = drabble.loader.registerItem();
 		setTimeout(function () {
 			drabble.loader.clearItem(myID1);
-		}, 10);
+		}, 100);
 		engine.init();
 	};
 	c.start = function () {
@@ -32,8 +32,9 @@ var code = (function newDrabbleCode() {
 
 var engine = engine || (function () {
 		var settings = {
-			MAP_WIDTH : 4098,
-			MAP_HEIGHT : 4098
+			MAP_WIDTH : 600,
+			MAP_HEIGHT : 400,
+			BIT_NUM : 10
 		};
 		var bits = [];
 		var keyStates = [];
@@ -50,10 +51,11 @@ var engine = engine || (function () {
 				});
 				makeCamera();
 				makePlayer();
-				for (var i = 0; i < 500; i++) {
+				for (var i = 0; i < settings.BIT_NUM; i++) {
 					addBit();
 				}
-				//setInterval(reset, 3000 );
+				//setInterval(reset, 10000 );
+				player.size = 5;
 			},
 			postInit : function () {},
 			test : function () {},
@@ -66,7 +68,8 @@ var engine = engine || (function () {
 			player = {};
 			makePlayer();
 			makeCamera();
-			for (var i = 0; i < 255; i++) {
+			var num = (Math.random()*128)+settings.BIT_NUM;
+			for (var i = 0; i < num; i++) {
 				addBit();
 			}
 		}
@@ -106,7 +109,7 @@ var engine = engine || (function () {
 			player.y = code.settings.canvas.HEIGHT / 2;
 			player.dx = 0;
 			player.dy = 0;
-			player.MAX = 2;
+			player.MAX = 3;
 			player.tock = function(){
 				if (keyStates[drabble.key.UP]) {
 					player.dy = -player.MAX;
@@ -124,13 +127,14 @@ var engine = engine || (function () {
 				player.dy -= player.dy * 0.05;
 				player.dx = Math.abs(player.dx) < .01 ? 0: player.dx; 
 				player.dy = Math.abs(player.dy) < .01 ? 0: player.dy; 
+			
 				player.tick();
 			}
 			player.draw = function( ctx ){
 				ctx.fillStyle = "#ff5310";
 				ctx.strokeStyle = "#ffff00";
-					// ctx.fillStyle = "#696969";
-					// ctx.strokeStyle = "#000000";		
+					ctx.fillStyle = "#696969";
+					ctx.strokeStyle = "#000000";		
 				ctx.beginPath();
 				ctx.arc(player.x-camera.x, player.y-camera.y, player.size, 0, 2*Math.PI, false);
 				ctx.stroke();
@@ -170,7 +174,7 @@ var engine = engine || (function () {
 		}
 		function Bit() {
 			return {
-				size : (Math.random() * 3) + 6,
+				size : 1,
 				x : Math.random() * settings.MAP_WIDTH,
 				y : Math.random() * settings.MAP_HEIGHT,
 				dx : Math.random() * 4 - 2,
@@ -199,12 +203,9 @@ var engine = engine || (function () {
 					ctx.beginPath();
 					ctx.arc(this.x-camera.x, this.y-camera.y, this.size, 0, 2*Math.PI, false);
 					ctx.stroke();
-					ctx.fill();		
-
+					ctx.fill();
 					ctx.fillStyle= "#000000";
 					ctx.fillRect(this.x-camera.x, this.y-camera.y, 2, 2);					
-					
-					
 				}
 			};
 		}
@@ -218,14 +219,25 @@ var engine = engine || (function () {
 		}
 		function eat(bitA, bitB) {
 			if (collision(bitA, bitB)) {
-				if (bitA.size == bitB.size) {}
-				else if (bitA.size > bitB.size) {
-					bitA.size += Math.ceil(bitB.size / Math.PI);
+				if (bitA.size === bitB.size) {
+					if( Math.random() < .5 ){
+						bitA.size += (bitB.size / Math.PI )/ 10;
+						bitA.dx = bitA.dx * 1;
+						bitA.dy = bitA.dy * 1;
+						bitB.size = 0;
+					} else{
+						bitB.size += (bitA.size / Math.PI )/ 10;
+						bitB.dx = bitB.dx * 1;
+						bitB.dy = bitB.dy * 1;
+						bitA.size = 0;
+					}
+				} else if (bitA.size > bitB.size) {
+					bitA.size += (bitB.size / Math.PI )/ 10;
 					bitA.dx = bitA.dx * 1;
 					bitA.dy = bitA.dy * 1;
 					bitB.size = 0;
 				} else if (bitA.size < bitB.size) {
-					bitB.size += Math.ceil(bitA.size / Math.PI);
+					bitB.size += (bitA.size / Math.PI )/ 10;
 					bitB.dx = bitB.dx * 1;
 					bitB.dy = bitB.dy * 1;
 					bitA.size = 0;
