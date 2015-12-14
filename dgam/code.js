@@ -4,14 +4,34 @@ var c = {
 	w:500, 
 	h:300,
 	canvas:{}, 
-	x:{}
+	ctx:{},
+	camera:{
+		x:0,
+		y:0
+	}
 };
-var cellsize= 18;
 
+function containedInBox(x, y, left, right, top, bottom){
+	return x > left && x < right && y > top && y < bottom 
+} 
+var cellsize= 18;
+var keyStates = [];
 var map={
 	land:[[]],
-	width:400,
-	height:290
+	width:50,
+	height:35,
+	registerLands: function(aTerritory){
+		aTerritory.lands.forEach(function(l){
+			map.land[l.x][l.y].owner = aTerritory
+		});
+	},
+	isLandFree: function( x, y ){
+		var onMap = containedInBox(x,y,0,map.width,0,map.height);
+		var nulled = map.land[x] == null || map.land[x][y] == null;
+		if(nulled){return false;}
+		var owned = map.land[x][y].owner != null;
+		return (onMap && !owned);
+	}
 };
 var territories = [];
 var cells = [
@@ -26,183 +46,140 @@ var cells = [
 function init(){
 	buildMap();
 	buildTerritories();
+	window.addEventListener("keydown", function (e) { keyStates[e.keyCode] = true; } );
+	window.addEventListener("keyup", function (e) { keyStates[e.keyCode] = false; } );
 	c.canvas = document.getElementById("c");
-	c.x = c.canvas.getContext( '2d' );
+	c.ctx = c.canvas.getContext( '2d' );
 	c.canvas.width = c.w;
 	c.canvas.height = c.h;
 	render();
 }
-
+function handleKeyInput(){
+	if (keyStates[key.UP]) {
+		c.camera.y -= 3;
+	}
+	if (keyStates[key.DOWN]) {
+		c.camera.y +=  3;
+	}
+	if (keyStates[key.LEFT]) {
+		c.camera.x -= 3;
+	}
+	if (keyStates[key.RIGHT]) {
+		c.camera.x += 3;
+	}
+}
 
 function render(){
-//	gen();
-	c.x.fillStyle = "#ffffff";
-	c.x.fillRect( 0, 0, c.w, c.h );
-	// for( var i = 0; i < map.length; i++ ){
-		// for( var j = 0; j < map[0].length; j++ ){
-			// c.x.fillStyle = map[i][j].style;
-			// c.x.fillRect( (i*cellsize), (j*cellsize), cellsize, cellsize );
-		// }
-	// }
-	territories.forEach(t => {t.drawBorder(c.x, cellsize);} );
+	handleKeyInput();
+	c.ctx.fillStyle = "#000000";
+	c.ctx.fillRect( 0, 0, c.w, c.h );
+	c.ctx.fillStyle = "#ffffff";
+	c.ctx.fillRect( 0-c.camera.x, 0-c.camera.y, map.width * cellsize, map.height * cellsize );
+	territories.forEach(t => {t.draw(c.ctx, cellsize);} );
 	requestAnimationFrame( render );
 }
 
 function buildTerritories(){
-	territories.push( new Territory(4,5)); 
-	
-	for(let i=1; i < 5; i++){
-		for(let j=1; j < 4; j++){
-			console.log("new terr @ "+Math.floor( i*map.width/6 )+", "+Math.floor( j*map.width/5 ) ); 
-			territories.push( new Territory( Math.floor(i*map.width/6), Math.floor(j*map.width/5) ) ); 
+	var tNum = 100;
+	var rX = "1d" + ( map.width-1 );
+	var rY = "1d" + ( map.height-1 );
+	var x = d.roll(rX);
+	var y = d.roll(rY);
+	var collisions = 0;
+	while(tNum > 0 && collisions < 1000){
+		x = d.roll(rX);
+		y = d.roll(rY);
+		if(
+			   map.isLandFree(x  ,y)
+			&& map.isLandFree(x-1,y)
+			&& map.isLandFree(x+1,y)
+			&& map.isLandFree(x  ,y-1)
+			&& map.isLandFree(x  ,y+1)
+
+		){
+			territories.push( new Territory( x, y ) ); 
+			tNum--;
+			collisions = 0;
+		}
+		else{
+			collisions++;
 		}
 	}
-	
+	console.log(collisions);
+	territories.forEach(t => territoryGeneration(t) );
+	territories.forEach(t => territoryGeneration(t) );
+	territories.forEach(t => territoryGeneration(t) );
 }
 
 
 
 function Territory(startX, startY){
-	
+	var myColor = "rgb(" + d.roll("1d255") + "," + d.roll("1d255") + "," + d.roll("1d255") + ")" ;
 	var terr = {
 		lands:[],
-		drawBorder: function(x, cellSize){
-			x.strokeStyle="#000000";
-			x.lineWidth=.5;
-			x.fillStyle="rgb("+d.roll("1d255")+","d.roll("1d255")+","d.roll("1d255"));
+		draw: function(ctx, cellSize){
+			ctx.strokeStyle="#000000";
+			ctx.lineWidth=.5;
+			ctx.fillStyle = myColor;
 			terr.lands.forEach( e => {
-				x.fillRect(e.x,e.y,cellSize,cellSize);
+				var canvasX = e.x*cellSize - c.camera.x;
+				var canvasY = e.y*cellSize - c.camera.y;
+				ctx.fillRect(canvasX, canvasY, cellSize, cellSize);
+				
 				if( !terr.lands.find( e2 => e2.x == e.x-cellsize && e2.y == e.y+0 ) ){ // left
-					x.strokeRect(e.x, e.y, 1, cellSize);
+					ctx.strokeRect(canvasX, canvasY, 1, cellSize);
 				}
 				if( !terr.lands.find( e2 => e2.x == e.x+cellsize && e2.y == e.y+0 ) ){ // right
-					x.strokeRect(e.x+cellSize, e.y, 1, cellSize);
+					ctx.strokeRect(canvasX+cellSize, canvasY, 1, cellSize);
 				}
 				if( !terr.lands.find( e2 => e2.x == e.x+0 && e2.y == e.y-cellsize ) ){ // top
-					x.strokeRect(e.x, e.y, cellSize, 1);
+					ctx.strokeRect(canvasX, canvasY, cellSize, 1);
 				}
 				if( !terr.lands.find( e2 => e2.x == e.x+0 && e2.y == e.y+cellsize ) ){ // bottmn
-					x.strokeRect(e.x, e.y+cellSize, cellSize, 1);
+					ctx.strokeRect(canvasX, canvasY+cellSize, cellSize, 1);
 				}
 			});
 		}
 	}
-	
-	
+		
 	terr.lands.push( {x:startX, y:startY} );
-	map.land[startX][startY].owner = terr;
-	
 	terr.lands.push( { x:startX+1, y:startY+0} );
-	map.land[startX+1][startY].owner = terr;
-	
 	terr.lands.push( { x:startX+0, y:startY+1} );
-	map.land[startX][startY+1].owner = terr;
-	
 	terr.lands.push( { x:startX-1, y:startY+0 } );
-	map.land[startX-1][startY].owner = terr;
-	
 	terr.lands.push( { x:startX+0, y:startY-1 } );
-	map.land[startX][startY-1].owner = terr;
-	
+	map.registerLands( terr )
 	return terr;
 }
 
 function territoryGeneration( territory ){
 	territory.lands.forEach( e => {
-		if( freeLand( e.x-1, e.y ) && d.roll("1d2") == 2 ){ // left
+		if( map.isLandFree( e.x-1, e.y ) && d.roll("1d2") == 2 ){ // left
 			territory.lands.push( {x: e.x-1, y: e.y } );
 		}
-		if( freeLand( e.x+1, e.y ) && d.roll("1d2") == 2 ){ // right
+		if( map.isLandFree( e.x+1, e.y ) && d.roll("1d2") == 2 ){ // right
 			territory.lands.push( {x: e.x+1, y: e.y } );
 		}
-		if( freeLand( e.x, e.y-1 ) && d.roll("1d2") == 2 ){ // top
+		if( map.isLandFree( e.x, e.y-1 ) && d.roll("1d2") == 2 ){ // top
 			territory.lands.push( {x: e.x, y: e.y-1 } );
 		}
-		if( freeLand( e.x, e.y+1 ) && d.roll("1d2") == 2 ){ // botm
+		if( map.isLandFree( e.x, e.y+1 ) && d.roll("1d2") == 2 ){ // botm
 			territory.lands.push( {x: e.x, y: e.y+1 } );
 		}
 	});
-}
-
-function freeLand( x, y ){
-	return (map.land[x][y].owner === null);
+	map.registerLands(territory);
 }
 
 
 function buildMap(){
 	map.land = [];
-	for(let i=0; i < map.width; i++){
+	for(let i=0; i <= map.width; i++){
 		let row = [];
-		for(let j=0; j < map.height; j++){
+		for(let j=0; j <= map.height; j++){
 			row.push( {owner:null} );
 		}
 		map.land.push( row );
 	}
 }
-/**
-function gen(){
-	var  buffer = [];
-	for(let i=0; i < map.length; i++){
-		let row = [];
-		for(let j=0; j < map[0].length; j++){
-			row.push(1);
-		}
-		buffer.push(row);
-	}
-	for(let i=1; i < buffer.length-1; i++){
-		for(let j=1; j < buffer[0].length; j++){
-			buffer[i][j] = greatestNeighbor(map, i, j);
-		}
-	}
-	map = buffer;
-}
-
-
-function buildMap(){
-	var len = Math.floor(c.w/cellsize);
-	var hig = Math.floor(c.h/cellsize);
-	var oMap = [];
-	for(let i=0; i < len; i++){
-		let row = [];
-		for(let j=0; j < hig; j++){
-			row.push(cells[d.roll("1d6")-1]);
-			rowBuffer.push(1);
-		}
-		oMap.push(row);
-	}
-	return oMap;
-}
-
-
-
-function greatestNeighbor(map, x, y){
-	var scores = [0,0,0,0,0,0];
-	if(map[x-1][y-1]) scores[map[x-1][y-1].id]++;
-	if(map[x-1][y-0]) scores[map[x-1][y-0].id]++;
-	if(map[x-1][y+1]) scores[map[x-1][y+1].id]++;
-	if(map[x-0][y-1]) scores[map[x-0][y-1].id]++;
-	if(map[x-0][y+1]) scores[map[x-0][y+1].id]++;
-	if(map[x+1][y-1]) scores[map[x+1][y-1].id]++;
-	if(map[x+1][y-0]) scores[map[x+1][y-0].id]++;
-	if(map[x+1][y+1]) scores[map[x+1][y+1].id]++;
-	var results = [];
-	for( let i = 0; i < scores.length; i++){
-		for(let e = 0; e < scores[i]; e++){
-			results.push(i);
-		}
-	}
-	return cells[results[d.roll("1d"+results.length)-1]];
-}
-
-
-
-
-
-
-*/
-
-
-
 
 
 (function() {
