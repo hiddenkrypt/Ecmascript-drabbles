@@ -2,73 +2,23 @@
 <html>
 	<head>
 		<title>Derf</title>
-		<script>
-var coords = [
-	//r
-	{x:0, y:0},
-	{x:0, y:1},
-	{x:0, y:2},
-	{x:1, y:0},
-	{x:1, y:1},
-	{x:2, y:1},
-	{x:2, y:2},
-	//a
-	{x:3, y:1},
-	{x:3, y:2},
-	{x:4, y:0},
-	{x:4, y:2},
-	{x:5, y:1},
-	{x:5, y:2},
-	//v
-	{x:6, y:0},
-	{x:6, y:1},
-	{x:7, y:2},
-	{x:8, y:0},
-	{x:8, y:1},
-	//t
-	{x:9, y:0},
-	{x:10, y:0},
-	{x:10, y:1},
-	{x:10, y:2},
-	{x:11, y:0}
-]
-var c={}, 
-	ctx={},
-	cellsize=1;
-
-function init(){
-	c = document.getElementById("c");
-	cellsize = c.width/16;
-	ctx = c.getContext("2d");
-	coords = scramble(coords);
-	arrayPrint(75);
-}
-
-function arrayPrint(interval){
-	var i = 0;
-	function f(){
-		ctx.fillStyle = "#000000";
-		ctx.fillRect(coords[i].x*cellsize, coords[i].y*cellsize, cellsize, cellsize);
-		if(++i < coords.length){
-			setTimeout(f, interval);
-		}			
-	}
-	ctx.fillStyle = "#ffffff";
-	ctx.fillRect(0,0,c.width, c.height);
-	setTimeout(f, interval);
-}
-
-function scramble(array){
-	var temp = [];
-	while( array.length > 0){
-		var index = Math.floor(Math.random()*array.length);
-		temp = temp.concat( array.splice(index , 1) );
-	}
-	return temp;
-}
-		</script>
+		<script src="ui.js"></script>
+		<script src="core.js"></script>
 	</head>
+	
 	<body onload="init();">
 		<canvas id="c" style="border: 2px solid black; display:block; margin:0 auto"></canvas>
+		<div>
+			Rate:<input id="speedo" type="range" min=10 max=2000 onchange="updateTickRate()"/>
+			<input type="button" value="Left to Right" 	onclick="()"/>
+			<input type="button" value="Random" 		onclick="()"/>
+			<input type="button" value="Top to Bottom" 	onclick="()"/>
+			<input type="button" value="None" 			onclick="()"/>
+			<input type="button" value="ColorSwap" 		onclick="()"/>
+			<div>
+				Background:<input id="bgColor" type="text" value="#ffffff" onchange="updateColor()"/>
+				<br/>Foreground:<input id="fgColor" type="text" value="#000000" onchange="updateColor()"/>
+			</div>
+		</div>
 	</body>
 </html>
