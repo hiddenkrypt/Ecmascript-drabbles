@@ -7,16 +7,24 @@
 	</head>
 	
 	<body onload="init();">
+		<div style="text-align:center; margin-left:auto; margin-right:auto"> 
+			<input type="button" value="Run" onclick="run()"/>
+		</div>
 		<canvas id="c" style="border: 2px solid black; display:block; margin:0 auto"></canvas>
 		<div>
-			Rate:<input id="speedo" type="range" min=10 max=2000 onchange="updateTickRate()"/>
+			Punch Rate:<input id="punchRate" type="range" min=1 max=500 onchange="updatePunchRate()"/>
 			<input type="button" value="Left to Right" 	onclick="()"/>
 			<input type="button" value="Random" 		onclick="()"/>
 			<input type="button" value="Top to Bottom" 	onclick="()"/>
 			<input type="button" value="None" 			onclick="()"/>
-			<input type="button" value="ColorSwap" 		onclick="()"/>
+			<div>
+				Fade in <input type="checkbox" 	onclick="()"/>
+				Fade out<input type="checkbox"	onclick="()"/>
+				Fade Rate:<input id="fadeRate" type="range" min=10 max=5000 onchange="updateFadeRate()"/>
+			</div>
 			<div>
 				Background:<input id="bgColor" type="text" value="#ffffff" onchange="updateColor()"/>
+				<input type="button" value="Color Swap" 	onclick="colorSwap()"/>
 				<br/>Foreground:<input id="fgColor" type="text" value="#000000" onchange="updateColor()"/>
 			</div>
 		</div>

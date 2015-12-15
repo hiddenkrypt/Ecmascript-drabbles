@@ -2,9 +2,13 @@ var color = {
 		bg: "#ffffff",
 		fg: "#000000"
 	},
-	c={}, 
-	ctx={},
-	cellsize=1;
+	c = {}, 
+	ctx = {},
+	cellsize = 1,
+	speed = {
+		fade: 1000,
+		punch: 75
+	};
 
 var coords = [
 	//r
@@ -37,25 +41,26 @@ var coords = [
 ];
 
 function init(){
+	initUI();
 	c = document.getElementById("c");
 	cellsize = c.width/12;
 	ctx = c.getContext("2d");
 	coords = scramble(coords);
-	paintArray(75);
+	paintArray();
 }
 
-function paintArray(interval){
+function paintArray(){
 	var i = 0;
 	function f(){
 		ctx.fillStyle = color.fg;
 		ctx.fillRect(coords[i].x*cellsize, coords[i].y*cellsize, cellsize, cellsize);
 		if(++i < coords.length){
-			setTimeout(f, interval);
+			setTimeout(f, speed.punch);
 		}			
 	}
 	ctx.fillStyle = color.bg;
 	ctx.fillRect(0,0,c.width, c.height);
-	setTimeout(f, interval);
+	setTimeout(f, speed.punch);
 }
 function sortLeftToRight(a, b){
 	return a.x < b.x;
