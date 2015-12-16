@@ -7,14 +7,18 @@ var c = {
 	ctx:{},
 	camera:{
 		x:0,
-		y:0
+		y:0,
+		centerOn: function(x,y){
+			c.camera.x = cellsize*x - (c.w/2);
+			c.camera.y = cellsize*y - (c.h/2);
+		}
 	}
 };
 
 function containedInBox(x, y, left, right, top, bottom){
 	return x > left && x < right && y > top && y < bottom 
 } 
-var cellsize= 18;
+var cellsize= 5;
 var keyStates = [];
 var map={
 	land:[[]],
@@ -64,8 +68,31 @@ function handleKeyInput(){
 	if (keyStates[key.LEFT]) {
 		c.camera.x -= 3;
 	}
+	if (keyStates[key.SPACE]) {
+		c.camera.centerOn(20,20);
+	}
 	if (keyStates[key.RIGHT]) {
 		c.camera.x += 3;
+	}
+	if (keyStates[key.NP_PLUS]){
+		var camgridX= c.camera.x / cellsize; 
+		var camgridY= c.camera.y / cellsize; 
+		var cangridMidX = c.w/2/cellsize;
+		var cangridMidY = c.h/2/cellsize;
+		var currentZoom = cellsize;
+		cellsize *= 1.02;
+		c.camera.x += (cangridMidX+camgridX)*(cellsize - currentZoom);
+		c.camera.y += (cangridMidX+camgridY)*(cellsize - currentZoom);
+	}
+	if (keyStates[key.NP_MINUS]){
+		var camgridX= c.camera.x / cellsize; 
+		var camgridY= c.camera.y / cellsize; 
+		var cangridMidX = c.w/2/cellsize;
+		var cangridMidY = c.h/2/cellsize;
+		var currentZoom = cellsize;
+		cellsize *= 0.98;
+		c.camera.x += (cangridMidX+camgridX)*(cellsize - currentZoom);
+		c.camera.y += (cangridMidX+camgridY)*(cellsize - currentZoom);
 	}
 }
 
@@ -119,7 +146,7 @@ function Territory(startX, startY){
 		lands:[],
 		draw: function(ctx, cellSize){
 			ctx.strokeStyle="#000000";
-			ctx.lineWidth=.5;
+			ctx.lineWidth=cellsize / 60;
 			ctx.fillStyle = myColor;
 			terr.lands.forEach( e => {
 				var canvasX = e.x*cellSize - c.camera.x;
