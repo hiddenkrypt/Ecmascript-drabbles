@@ -15,49 +15,51 @@ var c = {
 	}
 };
 
-function containedInBox(x, y, left, right, top, bottom){
-	return x > left && x < right && y > top && y < bottom 
-} 
-var cellsize= 5;
+var cellsize= 10;
 var keyStates = [];
+var territories = [];
 var map={
 	land:[[]],
 	width:50,
-	height:35,
+	height:30,
 	registerLands: function(aTerritory){
 		aTerritory.lands.forEach(function(l){
 			map.land[l.x][l.y].owner = aTerritory
 		});
 	},
 	isLandFree: function( x, y ){
-		var onMap = containedInBox(x,y,0,map.width,0,map.height);
+		var onMap = containedInBox(x,y,-1,map.width,-1,map.height);
 		var nulled = map.land[x] == null || map.land[x][y] == null;
 		if(nulled){return false;}
 		var owned = map.land[x][y].owner != null;
 		return (onMap && !owned);
 	}
 };
-var territories = [];
-var cells = [
-	{id:0, style:"#ffff33"},
-	{id:1, style:"#a10000"},
-	{id:2, style:"#ff0000"},
-	{id:3, style:"#ff8100"},
-	{id:4, style:"#ff6f00"},
-	{id:5, style:"#ffff00"},
-];
+
+function containedInBox(x, y, left, right, top, bottom){
+	return x > left && x < right && y > top && y < bottom 
+} 
 
 function init(){
+	rendering= false;
+	territories = [];
+	map.land = [[]];
 	buildMap();
 	buildTerritories();
 	window.addEventListener("keydown", function (e) { keyStates[e.keyCode] = true; } );
-	window.addEventListener("keyup", function (e) { keyStates[e.keyCode] = false; } );
+	window.addEventListener("keyup", function (e) { 
+		keyStates[e.keyCode] = false;
+		if( e.keyCode == key.SPACE ) {
+			territories.forEach(t => territoryGeneration(t) );
+		}
+	} );
 	c.canvas = document.getElementById("c");
 	c.ctx = c.canvas.getContext( '2d' );
 	c.canvas.width = c.w;
-	c.canvas.height = c.h;
+	c.canvas.height = c.h;	
 	render();
 }
+
 function handleKeyInput(){
 	if (keyStates[key.UP]) {
 		c.camera.y -= 3;
@@ -67,9 +69,6 @@ function handleKeyInput(){
 	}
 	if (keyStates[key.LEFT]) {
 		c.camera.x -= 3;
-	}
-	if (keyStates[key.SPACE]) {
-		c.camera.centerOn(20,20);
 	}
 	if (keyStates[key.RIGHT]) {
 		c.camera.x += 3;
@@ -107,7 +106,7 @@ function render(){
 }
 
 function buildTerritories(){
-	var tNum = 100;
+	var tNum = 30;
 	var rX = "1d" + ( map.width-1 );
 	var rY = "1d" + ( map.height-1 );
 	var x = d.roll(rX);
@@ -122,7 +121,6 @@ function buildTerritories(){
 			&& map.isLandFree(x+1,y)
 			&& map.isLandFree(x  ,y-1)
 			&& map.isLandFree(x  ,y+1)
-
 		){
 			territories.push( new Territory( x, y ) ); 
 			tNum--;
@@ -133,15 +131,13 @@ function buildTerritories(){
 		}
 	}
 	console.log(collisions);
-	territories.forEach(t => territoryGeneration(t) );
-	territories.forEach(t => territoryGeneration(t) );
-	territories.forEach(t => territoryGeneration(t) );
 }
 
 
 
 function Territory(startX, startY){
 	var myColor = "rgb(" + d.roll("1d255") + "," + d.roll("1d255") + "," + d.roll("1d255") + ")" ;
+	var myNeighbors = [];
 	var terr = {
 		lands:[],
 		draw: function(ctx, cellSize){
@@ -169,11 +165,7 @@ function Territory(startX, startY){
 		}
 	}
 		
-	terr.lands.push( {x:startX, y:startY} );
-	terr.lands.push( { x:startX+1, y:startY+0} );
-	terr.lands.push( { x:startX+0, y:startY+1} );
-	terr.lands.push( { x:startX-1, y:startY+0 } );
-	terr.lands.push( { x:startX+0, y:startY-1 } );
+	terr.lands.push( { x:startX+0, y:startY+0 } );
 	map.registerLands( terr )
 	return terr;
 }
