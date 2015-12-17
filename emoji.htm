@@ -273,3 +273,26 @@
 <br> ☜(⌒▽⌒)☞   
 <br>
 </div>
+
+uses java.lang.Exception
+class Table extends Exception {
+  public construct(msg : String ){
+    super(msg) 
+  }
+  public function ノﾟДﾟノ(){
+    print(this.Message);
+  }
+}
+class Meme{
+  public function ╯︵(┻━━┻ : Table){
+    throw ┻━━┻ 
+  }
+}
+var ┻━┻ = new Table("Table flipped but it's cool I got this. ");
+var ╯°□° = new Meme()
+
+try{
+  (╯°□°).╯︵ (┻━┻)
+} catch (┬──┬ : Table){
+  ┬──┬.ノﾟДﾟノ()
+}
