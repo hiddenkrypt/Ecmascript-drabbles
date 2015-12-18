@@ -12,15 +12,17 @@
 		</div>
 		<canvas id="c" style="border: 2px solid black; display:block; margin:0 auto"></canvas>
 		<div>
-			Punch Rate:<input id="punchRate" type="range" min=1 max=500 onchange="ui.updatePunchRate()"/>
+			Punch Rate:
+			<input id="punchRate" type="range" min=1 max=500 onchange="ui.updatePunchRate()"/>
+			<span id="punchRateDisplay"></span>
 			<input type="button" value="Left to Right" 	onclick="()"/>
 			<input type="button" value="Random" 		onclick="()"/>
 			<input type="button" value="Top to Bottom" 	onclick="()"/>
 			<input type="button" value="None" 			onclick="()"/>
 			<div>
-				Fade in <input type="checkbox" 	onclick="()"/>
-				Fade out<input type="checkbox"	onclick="()"/>
+				<input id="fadeStyle" type="button" value="No Fade" onclick="ui.fadeToggle()"/>
 				Fade Rate:<input id="fadeRate" type="range" min=10 max=5000 onchange="ui.updateFadeRate()"/>
+				<span id="fadeRateDisplay"></span>
 			</div>
 			<div>
 				Background:<input id="bgColor" type="text" value="#ffffff" onchange="ui.updateColor()"/>
