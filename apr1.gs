@@ -28,28 +28,28 @@ class BFInterpreter{
   private var _OutputBuffer : String = "";
   private var _InputBuffer : String = "";
   private var _Code : char[] = {};
-  private var _RegisterIndex : int = 0;
-  private var _InstructionPointer : int = 0;
-  private var _InputIndex : int = 0;
+  private var _mem_i : int = 0;
+  private var _pc : int = 0;
+  private var _in_i : int = 0;
   
   construct(){}
   construct(startingTape : int[] ){
     _Tape = startingTape;
   }
-  private function shiftLeft(){ _RegisterIndex--; }
-  private function shiftRight(){ _RegisterIndex++; }
-  private function increment(){ _Tape[_RegisterIndex]++; }
-  private function decrement(){ _Tape[_RegisterIndex]--; }
-  private function output(){_OutputBuffer += _Tape[_RegisterIndex] as char }
-  private function input(){_Tape[_RegisterIndex] =_InputBuffer.charAt(_InputIndex) as int; _InputIndex++;}
+  private function shiftLeft(){ _mem_i--; }
+  private function shiftRight(){ _mem_i++; }
+  private function increment(){ _Tape[_mem_i]++; }
+  private function decrement(){ _Tape[_mem_i]--; }
+  private function output(){_OutputBuffer += _Tape[_mem_i] as char }
+  private function input(){_Tape[_mem_i] =_InputBuffer.charAt(_in_i) as int; _in_i++;}
   private function loopStart(){
-    if( _Tape[_RegisterIndex] == 0){
+    if( _Tape[_mem_i] == 0){
       var level = 0;
-      while(_Code[_InstructionPointer] != ']' && level > 0){
-        _InstructionPointer++;
-        if(_Code[_InstructionPointer] == '['){
+      while(_Code[_pc] != ']' && level > 0 && _pc < _Tape.length){
+        _pc++;
+        if(_Code[_pc] == '['){
           level++;
-        } else if (_Code[_InstructionPointer] == ']'){
+        } else if (_Code[_pc] == ']'){
           level--;
         }
       }
@@ -57,15 +57,15 @@ class BFInterpreter{
   }
   private function loopEnd(){
     var level = 0;
-    while(_Code[_InstructionPointer] != '[' && level > 0){
-      _InstructionPointer--;
-      if(_Code[_InstructionPointer] == ']'){
+    while(_pc >=0 && _Code[_pc] != '[' && level > 0){
+      _pc--;
+      if(_Code[_pc] == ']'){
         level++;
-      } else if (_Code[_InstructionPointer] == '['){
+      } else if (_Code[_pc] == '['){
         level--;
       }
     }
-    _InstructionPointer--;
+    _pc--;
   }
 
   public property set Code(newCode : String){
@@ -79,14 +79,20 @@ class BFInterpreter{
   }
   
   public function run() : String {
-    _InstructionPointer = 0;
+    _pc = 0;
     _OutputBuffer = "";
     for(i in _Tape){
       i = 0; 
     }
-    while(_InstructionPointer < _Code.length){
-      print(_InstructionPointer);
-      switch( _Code[_InstructionPointer]){
+    while(_pc < _Code.length){
+      breakpoint++;
+	  if(breakpoint > 100){
+        print("BREAKPOINT.");
+        break;
+	  }
+	  print("FETCH. PC:"+_pc+" CODE:"+_Code[_pc]+ "  TAPE:");
+	  printTape();
+      switch( _Code[_pc] ){
         case '<': shiftLeft();  break;
         case '>': shiftRight(); break;
         case '+': increment();  break;
@@ -97,7 +103,7 @@ class BFInterpreter{
         case ']': loopEnd();    break;
         default: break;
       }
-      _InstructionPointer++;
+      _pc++;
     }
     return _OutputBuffer;
   }
