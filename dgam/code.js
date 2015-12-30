@@ -33,8 +33,8 @@ var core = (function(){
 	var territories = [];
 	var map={
 		land:[[]],
-		width:50,
-		height:30,
+		width:150,
+		height:100,
 		registerLands: function(aTerritory){
 			aTerritory.lands.forEach(function(l){
 				map.land[l.x][l.y].owner = aTerritory
@@ -78,8 +78,8 @@ var core = (function(){
 	publicAPI.init = init;
 	function click(event){
 		var coords = c.canvasToGrid({x: event.offsetX, y: event.offsetY});
-		territories.forEach(e => e.deselect());
-		map.land[coords.x][coords.y].owner.select();
+		//territories.forEach(e => e.deselect());
+		map.land[coords.x][coords.y].owner.getID();
 	}
 	function handleKeyInput(){
 		if (keyStates[key.UP]) {
@@ -127,7 +127,7 @@ var core = (function(){
 	}
 
 	function buildTerritories(){
-		var tNum = 30;
+		var tNum = 70;
 		var rX = "1d" + ( map.width-1 );
 		var rY = "1d" + ( map.height-1 );
 		var x = d.roll(rX);
@@ -143,7 +143,7 @@ var core = (function(){
 				&& map.isLandFree(x  ,y-1)
 				&& map.isLandFree(x  ,y+1)
 			){
-				territories.push( new Territory( x, y ) ); 
+				territories.push( new Territory( x, y, territories.length) ); 
 				tNum--;
 				collisions = 0;
 			}
@@ -156,10 +156,42 @@ var core = (function(){
 
 
 
-	function Territory(startX, startY){
+	function Territory(startX, startY, ID){
 		var myColor = "rgb(" + d.roll("1d255") + "," + d.roll("1d255") + "," + d.roll("1d255") + ")" ;
 		var myNeighbors = [];
-		var selected = false;
+		var myID = ID;
+		function drawSides(ctx, cellSize, land){
+			var canvasX = land.x*cellSize - c.camera.x;
+			var canvasY = land.y*cellSize - c.camera.y;
+		/*	if( !terr.lands.find( e2 => e2.x == land.x-1 && e2.y == land.y ) ){ // left
+			ctx.strokeRect(canvasX, canvasY, 1, cellSize);
+			}
+			if( !terr.lands.find( e2 => e2.x == land.x+1 && e2.y == land.y ) ){ // right
+			ctx.strokeRect(canvasX+cellSize, canvasY, 1, cellSize);
+			}
+			if( !terr.lands.find( e2 => e2.x == land.x && e2.y == land.y-1 ) ){ // top
+			ctx.strokeRect(canvasX, canvasY, cellSize, 1);
+			}
+			if( !terr.lands.find( e2 => e2.x == land.x && e2.y == land.y+1 ) ){ // bottmn
+			ctx.strokeRect(canvasX, canvasY+cellSize, cellSize, 1);
+			}*/
+			try{
+				if(land.x >0 && map.land[land.x-1][land.y].owner != land){
+					ctx.strokeRect(canvasX, canvasY, 1, cellSize);
+				}
+				if(land.x == 10 && land.y == 10){throw "Balls";}
+			}
+			catch(e){
+				console.log("err");
+				console.log(land);
+				console.log(map.land[land.x-1][land.y]);
+				console.log(land.getID());
+				console.log(map.land[land.x-1][land.y].getID());
+				throw e;
+			}
+		};
+		
+		
 		var terr = {
 			lands:[]
 			,draw: function(ctx, cellSize){
@@ -170,33 +202,21 @@ var core = (function(){
 					var canvasX = e.x*cellSize - c.camera.x;
 					var canvasY = e.y*cellSize - c.camera.y;
 					ctx.fillRect(canvasX, canvasY, cellSize, cellSize);
-					
-					if( !terr.lands.find( e2 => e2.x == e.x-1 && e2.y == e.y ) ){ // left
-						ctx.strokeRect(canvasX, canvasY, 1, cellSize);
-					}
-					if( !terr.lands.find( e2 => e2.x == e.x+1 && e2.y == e.y ) ){ // right
-						ctx.strokeRect(canvasX+cellSize, canvasY, 1, cellSize);
-					}
-					if( !terr.lands.find( e2 => e2.x == e.x && e2.y == e.y-1 ) ){ // top
-						ctx.strokeRect(canvasX, canvasY, cellSize, 1);
-					}
-					if( !terr.lands.find( e2 => e2.x == e.x && e2.y == e.y+1 ) ){ // bottmn
-						ctx.strokeRect(canvasX, canvasY+cellSize, cellSize, 1);
-					}
+					drawSides(ctx, cellSize, e);
 				});
-				
-				if(selected){
-					terr.lands.forEach( e => {
-						var canvasX = e.x*cellSize - c.camera.x;
-						var canvasY = e.y*cellSize - c.camera.y;
-						ctx.strokeStyle = "#ffffff";
-						ctx.lineWidth = cellsize/20;
-						ctx.strokeRect(canvasX, canvasY, cellSize, cellSize);
-					});
-				}
 			}
-			,select: function(){ selected = true; }
-			,deselect: function(){ selected = false; }
+			,drawSelected: function(ctx, cellsize){
+				terr.lands.forEach( e => {
+					var canvasX = e.x*cellSize - c.camera.x;
+					var canvasY = e.y*cellSize - c.camera.y;
+					ctx.strokeStyle = "#ffffff";
+					ctx.lineWidth = cellsize/20;
+					ctx.strokeRect(canvasX, canvasY, cellSize, cellSize);
+				});
+			}
+			,getID: function(){
+				return myID;
+			}
 		}
 			
 		terr.lands.push( { x:startX+0, y:startY+0 } );
@@ -237,7 +257,7 @@ var core = (function(){
 	
 	
 	
-	
+	publicAPI.map = map;
 	return publicAPI;
 
 }());
