@@ -39,6 +39,7 @@ var ui = (function(){
 		},
 
 		run: function(){
+			console.log("doop");
 			core.runAnimation();
 		},
 		fadeToggle: function(){
@@ -53,13 +54,13 @@ var ui = (function(){
 				core.flags.fadeIn = true;
 			}
 			else{
-				code.flage.fadeIn = false;
+				code.flags.fadeIn = false;
 			}
-			if(doc.fadeStyle.value == "Fade In" ||doc.fadeStyle.value == "Fade InOut"){
-				code.flage.fadeOut = true;
+			if(doc.fadeStyle.value == "Fade Out" ||doc.fadeStyle.value == "Fade InOut"){
+				code.flags.fadeOut = true;
 			}
 			else{
-				code.flage.fadeOut = false;
+				code.flags.fadeOut = false;
 			}
 		}	
 	};

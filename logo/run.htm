@@ -20,14 +20,14 @@
 			<input type="button" value="Top to Bottom" 	onclick="()"/>
 			<input type="button" value="None" 			onclick="()"/>
 			<div>
-				<input id="fadeStyle" type="button" value="No Fade" onclick="ui.fadeToggle()"/>
+				<span style="display:block-inline; width:500px"><input id="fadeStyle" type="button" value="No Fade" onclick="ui.fadeToggle()"/></span>
 				Fade Rate:<input id="fadeRate" type="range" min=10 max=5000 onchange="ui.updateFadeRate()"/>
 				<span id="fadeRateDisplay"></span>
 			</div>
 			<div>
-				Background:<input id="bgColor" type="text" value="#ffffff" onchange="ui.updateColor()"/>
+				Background:<input id="bgColor" type="text" width=8 value="#ffffff" onchange="ui.updateColor()"/>
 				<input type="button" value="Color Swap" 	onclick="ui.colorSwap()"/>
-				<br/>Foreground:<input id="fgColor" type="text" value="#000000" onchange="ui.updateColor()"/>
+				<br/>Foreground:<input id="fgColor" type="text" cols=8 value="#000000" onchange="ui.updateColor()"/>
 			</div>
 		</div>
 	</body>

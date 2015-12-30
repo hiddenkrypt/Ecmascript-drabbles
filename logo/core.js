@@ -50,6 +50,7 @@ var core = (function(){
 		c.height = cellsize*3;
 		ctx = c.getContext("2d");
 		coords = scramble(coords);
+		drawFrame();
 	}
 
 	function runAnimation(){
@@ -57,12 +58,11 @@ var core = (function(){
 		var i = 0;
 		function f(){
 			if(++i < coords.length){
-				coords.active = true;
+				coords[i].active = true;
 				setTimeout(f, speed.punch);
 			}			
 		}
 		setTimeout(f, speed.punch);
-		drawFrame();
 	}
 	
 	function drawFrame(){
@@ -71,7 +71,7 @@ var core = (function(){
 		ctx.fillStyle = color.fg;
 		coords.forEach(function(pixel){
 			if(pixel.active){
-				ctx.fillRect(e.x*cellsize, e.y*cellsize, cellsize, cellsize);
+				ctx.fillRect(pixel.x*cellsize, pixel.y*cellsize, cellsize, cellsize);
 			}
 		});
 		requestAnimationFrame(drawFrame);
@@ -90,7 +90,8 @@ var core = (function(){
 		speed: speed,
 		runAnimation: runAnimation,
 		init: init,
-		flags : flags
+		flags : flags,
+		coords: coords
 	};
 }());
 
