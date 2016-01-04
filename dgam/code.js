@@ -1,10 +1,9 @@
 "use strict";
 
-
 var core = (function(){
-	var publicAPI = {};
-	
-	
+	var publicAPI = {
+		utils:{}
+	};
 	var d = new Dice();
 	var c = {
 		w:500, 
@@ -18,7 +17,18 @@ var core = (function(){
 				var translate = c.canvasToGrid( {x: c.w/2, y: c.h/2} );
 				c.camera.x = translate.x;		
 				c.camera.y = translate.y;
+			},
+			zoom: function( zStep ){
+				var camgridX= this.x / cellsize; 
+				var camgridY= this.y / cellsize; 
+				var cangridMidX = c.w/2/cellsize;
+				var cangridMidY = c.h/2/cellsize;
+				var currentZoom = cellsize;
+				cellsize *= zStep;
+				this.x += (cangridMidX+camgridX)*(cellsize - currentZoom);
+				this.y += (cangridMidX+camgridY)*(cellsize - currentZoom);
 			}
+			
 		},
 		canvasToGrid: function( coords ){
 			return {
@@ -41,7 +51,7 @@ var core = (function(){
 			});
 		},
 		isLandFree: function( x, y ){
-			var onMap = containedInBox(x,y,-1,map.width,-1,map.height);
+			var onMap = core.utils.containedInBox(x,y,-1,map.width,-1,map.height);
 			var nulled = map.land[x] == null || map.land[x][y] == null;
 			if( nulled ){return false;}
 			var owned = map.findOwner(x,y) != null;
@@ -52,20 +62,16 @@ var core = (function(){
 		}
 	};
 
-	function containedInBox(x, y, left, right, top, bottom){
-		return x > left && x < right && y > top && y < bottom 
-	} 
 	
 	function init(){
 		territories = [];
-		map.land = [[]];
-		buildMap();
+		core.utils.buildMap(map);
 		buildTerritories();
 		window.addEventListener("keydown", function (e) { keyStates[e.keyCode] = true; } );
 		window.addEventListener("keyup", function (e) { 
 			keyStates[e.keyCode] = false;
 			if( e.keyCode == key.SPACE ) {
-				territories.forEach(t => territoryGeneration(t) );
+				territories.forEach(t => core.utils.territoryGenerate(t, map) );
 			}
 		} );
 		window.addEventListener("mousedown", click);
@@ -78,8 +84,7 @@ var core = (function(){
 	publicAPI.init = init;
 	function click(event){
 		var coords = c.canvasToGrid({x: event.offsetX, y: event.offsetY});
-		//territories.forEach(e => e.deselect());
-		map.land[coords.x][coords.y].owner.getID();
+		console.log(coords);
 	}
 	function handleKeyInput(){
 		if (keyStates[key.UP]) {
@@ -95,24 +100,10 @@ var core = (function(){
 			c.camera.x += 3;
 		}
 		if (keyStates[key.NP_PLUS]){
-			var camgridX= c.camera.x / cellsize; 
-			var camgridY= c.camera.y / cellsize; 
-			var cangridMidX = c.w/2/cellsize;
-			var cangridMidY = c.h/2/cellsize;
-			var currentZoom = cellsize;
-			cellsize *= 1.02;
-			c.camera.x += (cangridMidX+camgridX)*(cellsize - currentZoom);
-			c.camera.y += (cangridMidX+camgridY)*(cellsize - currentZoom);
+			c.camera.zoom(1.02);
 		}
 		if (keyStates[key.NP_MINUS]){
-			var camgridX= c.camera.x / cellsize; 
-			var camgridY= c.camera.y / cellsize; 
-			var cangridMidX = c.w/2/cellsize;
-			var cangridMidY = c.h/2/cellsize;
-			var currentZoom = cellsize;
-			cellsize *= 0.98;
-			c.camera.x += (cangridMidX+camgridX)*(cellsize - currentZoom);
-			c.camera.y += (cangridMidX+camgridY)*(cellsize - currentZoom);
+			c.camera.zoom(0.98);
 		}
 	}
 
@@ -154,8 +145,6 @@ var core = (function(){
 		console.log(collisions);
 	}
 
-
-
 	function Territory(startX, startY, ID){
 		var myColor = "rgb(" + d.roll("1d255") + "," + d.roll("1d255") + "," + d.roll("1d255") + ")" ;
 		var myNeighbors = [];
@@ -163,40 +152,24 @@ var core = (function(){
 		function drawSides(ctx, cellSize, land){
 			var canvasX = land.x*cellSize - c.camera.x;
 			var canvasY = land.y*cellSize - c.camera.y;
-		/*	if( !terr.lands.find( e2 => e2.x == land.x-1 && e2.y == land.y ) ){ // left
-			ctx.strokeRect(canvasX, canvasY, 1, cellSize);
+			if(land.x > 0 && map.land[land.x-1][land.y].owner != terr){
+				ctx.strokeRect(canvasX, canvasY, 1, cellSize);
+			}			
+			if(land.x < map.width && map.land[land.x+1][land.y].owner != terr){
+				ctx.strokeRect(canvasX+cellSize, canvasY, 1, cellSize);
+			}			
+			if(land.y < map.height && map.land[land.x][land.y+1].owner != terr){
+				ctx.strokeRect(canvasX, canvasY+cellSize, cellSize, 1);
 			}
-			if( !terr.lands.find( e2 => e2.x == land.x+1 && e2.y == land.y ) ){ // right
-			ctx.strokeRect(canvasX+cellSize, canvasY, 1, cellSize);
-			}
-			if( !terr.lands.find( e2 => e2.x == land.x && e2.y == land.y-1 ) ){ // top
-			ctx.strokeRect(canvasX, canvasY, cellSize, 1);
-			}
-			if( !terr.lands.find( e2 => e2.x == land.x && e2.y == land.y+1 ) ){ // bottmn
-			ctx.strokeRect(canvasX, canvasY+cellSize, cellSize, 1);
-			}*/
-			try{
-				if(land.x >0 && map.land[land.x-1][land.y].owner != land){
-					ctx.strokeRect(canvasX, canvasY, 1, cellSize);
-				}
-				if(land.x == 10 && land.y == 10){throw "Balls";}
-			}
-			catch(e){
-				console.log("err");
-				console.log(land);
-				console.log(map.land[land.x-1][land.y]);
-				console.log(land.getID());
-				console.log(map.land[land.x-1][land.y].getID());
-				throw e;
+			if(land.y > 0 && map.land[land.x][land.y-1].owner != terr){
+				ctx.strokeRect(canvasX, canvasY, cellSize, 1);
 			}
 		};
-		
-		
 		var terr = {
 			lands:[]
 			,draw: function(ctx, cellSize){
 				ctx.strokeStyle="#000000";
-				ctx.lineWidth=cellsize / 30;
+				ctx.lineWidth=cellsize / 10;
 				ctx.fillStyle = myColor;
 				terr.lands.forEach( e => {
 					var canvasX = e.x*cellSize - c.camera.x;
@@ -210,7 +183,7 @@ var core = (function(){
 					var canvasX = e.x*cellSize - c.camera.x;
 					var canvasY = e.y*cellSize - c.camera.y;
 					ctx.strokeStyle = "#ffffff";
-					ctx.lineWidth = cellsize/20;
+					ctx.lineWidth = cellsize/5;
 					ctx.strokeRect(canvasX, canvasY, cellSize, cellSize);
 				});
 			}
@@ -224,42 +197,11 @@ var core = (function(){
 		return terr;
 	}
 
-	function territoryGeneration( territory ){
-		territory.lands.forEach( e => {
-			if( map.isLandFree( e.x-1, e.y ) && d.roll("1d2") == 2 ){ // left
-				territory.lands.push( {x: e.x-1, y: e.y } );
-			}
-			if( map.isLandFree( e.x+1, e.y ) && d.roll("1d2") == 2 ){ // right
-				territory.lands.push( {x: e.x+1, y: e.y } );
-			}
-			if( map.isLandFree( e.x, e.y-1 ) && d.roll("1d2") == 2 ){ // top
-				territory.lands.push( {x: e.x, y: e.y-1 } );
-			}
-			if( map.isLandFree( e.x, e.y+1 ) && d.roll("1d2") == 2 ){ // botm
-				territory.lands.push( {x: e.x, y: e.y+1 } );
-			}
-		});
-		map.registerLands(territory);
-	}
 
 
-	function buildMap(){
-		map.land = [];
-		for(let i=0; i <= map.width; i++){
-			let row = [];
-			for(let j=0; j <= map.height; j++){
-				row.push( {owner:null} );
-			}
-			map.land.push( row );
-		}
-	}
-	
-	
-	
 	
 	publicAPI.map = map;
 	return publicAPI;
-
 }());
 
 
