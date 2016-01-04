@@ -52,16 +52,16 @@ QUnit.test( "Constants consistency", function( assert ){
 QUnit.test( "bad format", function( assert ){
 	
 	try{ die.roll("7d"); }
-	catch(e){assert.equal( e, "Invalid Dice String", "7d"); }
+	catch(e){assert.equal( e.message, "Invalid Dice String Argument: 7d", "7d"); }
 	
 	try{ die.roll("1dd3"); }
-	catch(e){assert.equal( e, "Invalid Dice String", "1dd3");}
+	catch(e){assert.equal( e.message, "Invalid Dice String Argument: 1dd3", "1dd3");}
 	
 	try{ die.roll("+3"); }
-	catch(e){assert.equal( e, "Invalid Dice String", "+3");}
+	catch(e){assert.equal( e.message, "Invalid Dice String Argument: +3", "+3");}
 	
 	try{ die.roll("d20"); }
-	catch(e){assert.equal( e, "Invalid Dice String", "d20");}
+	catch(e){assert.equal( e.message, "Invalid Dice String Argument: d20", "d20");}
 } );
 
 
