@@ -1,3 +1,5 @@
+"use strict";
+
 var ui = (function(){
 	var doc = {};
 	
@@ -10,7 +12,8 @@ var ui = (function(){
 				punchRate: document.getElementById("punchRate"),
 				fadeRateDisplay: document.getElementById("fadeRateDisplay"),
 				punchRateDisplay: document.getElementById("punchRateDisplay"),
-				fadeStyle: document.getElementById("fadeStyle")
+				fadeStyle: document.getElementById("fadeStyle"),
+				grid: document.getElementById("grid")
 			};
 			doc.punchRate.value = core.speed.punch;
 			ui.updatePunchRate();
@@ -62,6 +65,12 @@ var ui = (function(){
 			else{
 				code.flags.fadeOut = false;
 			}
-		}	
+		},
+		gridToggle: function(){
+			core.flags.grid = doc.grid.checked;
+		},
+		gridColorSwap: function(){
+			core.flags.gridColorSwap = !core.flags.gridColorSwap;
+		}
 	};
 }())

@@ -1,3 +1,4 @@
+"use strict";
 var core = (function(){
 	var color =  {
 			bg: "#ffffff",
@@ -12,7 +13,9 @@ var core = (function(){
 		};
 	var flags = {
 		fadeIn: false,
-		fadeOut: false
+		fadeOut: false,
+		grid: false,
+		gridColorSwap: false
 	}
 	var coords = [
 		//r
@@ -57,8 +60,8 @@ var core = (function(){
 		coords.forEach(pixel => pixel.active = false);
 		var i = 0;
 		function f(){
-			if(++i < coords.length){
-				coords[i].active = true;
+			if(i < coords.length){
+				coords[i++].active = true;
 				setTimeout(f, speed.punch);
 			}			
 		}
@@ -74,6 +77,15 @@ var core = (function(){
 				ctx.fillRect(pixel.x*cellsize, pixel.y*cellsize, cellsize, cellsize);
 			}
 		});
+		if(flags.grid){
+			ctx.fillStyle = flags.gridColorSwap? color.bg : color.fg;
+			for(let i=0; i < 12; i++){
+				ctx.fillRect(i*cellsize, 0, 1, c.height);
+			}
+			for(let i=0; i < 3; i++){
+				ctx.fillRect(0, i*cellsize, c.width, 1);
+			}
+		}
 		requestAnimationFrame(drawFrame);
 	}
 
@@ -91,7 +103,7 @@ var core = (function(){
 		runAnimation: runAnimation,
 		init: init,
 		flags : flags,
-		coords: coords
+		g: function(){return coords;}
 	};
 }());
 
