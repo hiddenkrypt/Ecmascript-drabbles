@@ -47,15 +47,15 @@ var core = (function(){
 				map.land[l.x][l.y].owner = aTerritory
 			});
 		},
-		isLandFree: function( x, y ){
-			var onMap = utils.containedInBox(x,y,-1,map.width,-1,map.height);
-			var nulled = map.land[x] == null || map.land[x][y] == null;
+		isLandFree: function( coords ){
+			var onMap = utils.containedInBox(coords.x,coords.y,-1,map.width,-1,map.height);
+			var nulled = map.land[coords.x] == null || map.land[coords.x][coords.y] == null;
 			if( nulled ){return false;}
-			var owned = map.findOwner(x,y) != null;
+			var owned = map.findOwner(coords) != null;
 			return (onMap && !owned);
 		},
-		findOwner : function( x, y ){
-			return map.land[x][y].owner;
+		findOwner : function( coords ){
+			return map.land[coords.x][coords.y].owner;
 		}
 	};
 
@@ -125,13 +125,13 @@ var core = (function(){
 			x = utils.d.roll(rX);
 			y = utils.d.roll(rY);
 			if(
-				   map.isLandFree(x  ,y)
-				&& map.isLandFree(x-1,y)
-				&& map.isLandFree(x+1,y)
-				&& map.isLandFree(x  ,y-1)
-				&& map.isLandFree(x  ,y+1)
+				   map.isLandFree({x: x,	y:y  })
+				&& map.isLandFree({x: x-1,	y:y  })
+				&& map.isLandFree({x: x+1,	y:y  })
+				&& map.isLandFree({x: x,	y:y-1})
+				&& map.isLandFree({x: x,	y:y+1})
 			){
-				territories.push( new Territory( x, y, territories.length) ); 
+				territories.push( new Territory( {x:x, y:y}, territories.length) ); 
 				tNum--;
 				collisions = 0;
 			}
@@ -142,7 +142,7 @@ var core = (function(){
 		console.log(collisions);
 	}
 
-	function Territory(startX, startY, ID){
+	function Territory(coords, ID){
 		var myColor = "rgb(" + utils.d.roll("1d255") + "," + utils.d.roll("1d255") + "," + utils.d.roll("1d255") + ")" ;
 		var myNeighbors = [];
 		var myID = ID;
@@ -189,13 +189,10 @@ var core = (function(){
 			}
 		}
 			
-		terr.lands.push( { x:startX+0, y:startY+0 } );
+		terr.lands.push( coords );
 		map.registerLands( terr )
 		return terr;
 	}
-
-
-
 	
 	publicAPI.map = map;
 	return publicAPI;
