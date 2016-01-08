@@ -1,10 +1,7 @@
 "use strict";
 
 var core = (function(){
-	var publicAPI = {
-		utils:{}
-	};
-	var d = new Dice();
+	var publicAPI = {};
 	var c = {
 		w:500, 
 		h:300,
@@ -51,7 +48,7 @@ var core = (function(){
 			});
 		},
 		isLandFree: function( x, y ){
-			var onMap = core.utils.containedInBox(x,y,-1,map.width,-1,map.height);
+			var onMap = utils.containedInBox(x,y,-1,map.width,-1,map.height);
 			var nulled = map.land[x] == null || map.land[x][y] == null;
 			if( nulled ){return false;}
 			var owned = map.findOwner(x,y) != null;
@@ -65,13 +62,13 @@ var core = (function(){
 	
 	function init(){
 		territories = [];
-		core.utils.buildMap(map);
+		utils.buildMap(map);
 		buildTerritories();
 		window.addEventListener("keydown", function (e) { keyStates[e.keyCode] = true; } );
 		window.addEventListener("keyup", function (e) { 
 			keyStates[e.keyCode] = false;
 			if( e.keyCode == key.SPACE ) {
-				territories.forEach(t => core.utils.territoryGenerate(t, map) );
+				territories.forEach(t => utils.territoryGenerationStep(t, map) );
 			}
 		} );
 		window.addEventListener("mousedown", click);
@@ -121,12 +118,12 @@ var core = (function(){
 		var tNum = 70;
 		var rX = "1d" + ( map.width-1 );
 		var rY = "1d" + ( map.height-1 );
-		var x = d.roll(rX);
-		var y = d.roll(rY);
+		var x = utils.d.roll(rX);
+		var y = utils.d.roll(rY);
 		var collisions = 0;
 		while(tNum > 0 && collisions < 1000){
-			x = d.roll(rX);
-			y = d.roll(rY);
+			x = utils.d.roll(rX);
+			y = utils.d.roll(rY);
 			if(
 				   map.isLandFree(x  ,y)
 				&& map.isLandFree(x-1,y)
@@ -146,7 +143,7 @@ var core = (function(){
 	}
 
 	function Territory(startX, startY, ID){
-		var myColor = "rgb(" + d.roll("1d255") + "," + d.roll("1d255") + "," + d.roll("1d255") + ")" ;
+		var myColor = "rgb(" + utils.d.roll("1d255") + "," + utils.d.roll("1d255") + "," + utils.d.roll("1d255") + ")" ;
 		var myNeighbors = [];
 		var myID = ID;
 		function drawSides(ctx, cellSize, land){
