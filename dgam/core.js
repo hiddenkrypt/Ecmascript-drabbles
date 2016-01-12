@@ -34,10 +34,21 @@ var core = (function(){
 			}			
 		}
 	};
-
+	var brush = null;
 	var cellsize= 10;
 	var keyStates = [];
 	var territories = [];
+	var water  = {
+		lands:[],
+		draw: function(ctx){
+			water.lands.forEach( e => {
+				var canvasX = e.x*cellsize - c.camera.x;
+				var canvasY = e.y*cellsize - c.camera.y;
+				ctx.fillStyle = "#0000ff";
+				ctx.fillRect(canvasX, canvasY, cellsize, cellsize);
+			});
+		}
+	};
 	var map={
 		land:[[]],
 		width:150,
@@ -61,6 +72,7 @@ var core = (function(){
 
 	
 	function init(){
+		ui.init();
 		territories = [];
 		utils.buildMap(map);
 		buildTerritories();
@@ -71,17 +83,24 @@ var core = (function(){
 				territories.forEach(t => utils.territoryGenerationStep(t, map) );
 			}
 		} );
-		window.addEventListener("mousedown", click);
 		c.canvas = document.getElementById("c");
 		c.ctx = c.canvas.getContext( '2d' );
 		c.canvas.width = c.w;
 		c.canvas.height = c.h;	
+		c.canvas.addEventListener("mousedown", click);
 		render();
 	}
 	publicAPI.init = init;
 	function click(event){
 		var coords = c.canvasToGrid({x: event.offsetX, y: event.offsetY});
-		console.log(coords);
+		if (brush == "capitol"){
+			territories.push( new Territory( coords, territories.length) ); 
+		}
+		else if( brush == "water"){
+			water.lands.push(coords);
+			map.registerLands(water);
+		}		
+		//console.log(coords);
 	}
 	function handleKeyInput(){
 		if (keyStates[key.UP]) {
@@ -111,6 +130,7 @@ var core = (function(){
 		c.ctx.fillStyle = "#ffffff";
 		c.ctx.fillRect( 0-c.camera.x, 0-c.camera.y, map.width * cellsize, map.height * cellsize );
 		territories.forEach(t => {t.draw(c.ctx, cellsize);} );
+		water.draw(c.ctx);
 		requestAnimationFrame( render );
 	}
 
@@ -192,6 +212,11 @@ var core = (function(){
 		terr.lands.push( coords );
 		map.registerLands( terr )
 		return terr;
+	}
+	
+	
+	publicAPI.selectBrush = function(type){
+		brush = type;
 	}
 	
 	publicAPI.map = map;
