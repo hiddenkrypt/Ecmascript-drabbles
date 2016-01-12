@@ -87,20 +87,28 @@ var core = (function(){
 		c.ctx = c.canvas.getContext( '2d' );
 		c.canvas.width = c.w;
 		c.canvas.height = c.h;	
+		c.canvas.addEventListener("mouseup", function(e){clicked = false;});
 		c.canvas.addEventListener("mousedown", click);
+		c.canvas.addEventListener("mousemove", drag);
 		render();
 	}
+	var clicked = false;
 	publicAPI.init = init;
 	function click(event){
+		clicked = true;
 		var coords = c.canvasToGrid({x: event.offsetX, y: event.offsetY});
 		if (brush == "capitol"){
 			territories.push( new Territory( coords, territories.length) ); 
 		}
-		else if( brush == "water"){
+	}
+	function drag(){
+		if( brush == "water" && clicked == true){
+			var coords = c.canvasToGrid({x: event.offsetX, y: event.offsetY});
 			water.lands.push(coords);
 			map.registerLands(water);
+			console.log(coords);
 		}		
-		//console.log(coords);
+		console.log(clicked);
 	}
 	function handleKeyInput(){
 		if (keyStates[key.UP]) {
