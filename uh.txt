@@ -1,0 +1,61 @@
+endings
+				
+- is bad end, nobody gets with anybody.
+AB is canon ending, good end. Maybe best end. C is happy for them. 
+AC is neutral or good end. AC get together while B is ready to start dating again
+ABC is secret end, half a joke. Basically AB with C butting in. 
+AC is neutral ish end. maybe not do? 
+
+
+
+A - wingman, lesbian, has a crush on B, wants her to be happy, but thinks B is straight,
+B - dater, broken hearted, recently broke up with her boyfriend for cheating on her.  Bi, but has mostly been dating men and her sexuality is not public
+C - tutorial wench kinda annoying but with a good heart. 
+
+A and B work together at a bakery / confectionary. C is a regular, and a friend of sorts. 
+
+
+
+Scene 1A - Bakery
+A is working in the bakery when C shows up to order something stupidly sugary. 
+C notices that B is gone yet again,a nd demands to know what's up. When A breaks the news,
+C *has* to intervene, and convinces A they should both visit B to cheer her up. 
+
+Scene 1B - B's apartment
+B, meanwhile, is watching TV and trying not to cry. (minigame of the 'keep it together' variety. Balance games, or something. )
+
+
+Scene 2 - B's apartment, that evening
+A and C show up at B's
+light conversation, followed by minigame
+A has to restore B's confidence to level 0. 
+C doesn't help directly, she explains the game and mechanics. This is explained directly in a 4th wall breaking way.
+Implicitly, it's because she wants A to take care of B. 
+	--minigame appears--
+	C: "quick, she's hitting rock bottom or something! Give her a hug and tell her she's pretty!"
+	B: "Why am I the only one doing this? what are you doing?"
+	C: "I'm giving you the tutorial, duh! Now, drop those blocks <game mechanics>"
+	
+Confidence minigame: Two player playing fast paced puzzles. Tetris, bejewled, dr. mario, yoshi cookie, soemthing. 
+When A does better at the game, it gives B bonuses and desireable advantages. 
+The game is won, either by a specific goal or by a timer or score or whatev. 
+B's confidence returns to level 0, and is ready to start returning. 
+B wants to go out dating again. A isn't sure. C thinks it's a good idea. A agrees to help B, partially as C's insistance. 
+
+Scene 3A - 
+A is working in the bakery. C comes in to talk with her, leading with "so when are you going to tell B how you feel?"
+A has options for a response:
+Deny: I have no idea what you're talking about! (+1) 
+Deny: What? No, it's not like that (-1)
+A cares about her friendship with B. 
+
+Scene 3B - 
+B is out shopping and meets a cute guy over common interests. A date is planned. 
+
+Scene 4 - 
+B tells A and C about the Date. C begins "the plan"
+
+
+
+Scene 90-
+A asks B to go on a date. B has three options, all of them listed as "panic". 
