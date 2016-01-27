@@ -3,23 +3,62 @@ var width = 400,
 	friction = .995,
 	impactEntropy = .99,
 	ballSize = 15,
-	ctx,
+	ctx = {},
+	c = {},
 	balls=[];
+	walls = [];
 		
-function newBall(positionX,positionY){
-	return {
-		x: positionX,
-		y: positionY,
-		dx: 0,
-		dy: 0
-	}
+function buildWalls(){
+	walls.push( { position:{x: 0, y: 0},size:{width:0,height:height} } )
+	walls.push( { position:{x: 0, y: 0},size:{width:width,height:0} } )
+	walls.push( { position:{x: 0, y: height},size:{width:width,height:0} } )
+	walls.push( { position:{x: 0, y: height},size:{width:0,height:height} } )
 }
-function newBallWithVector(positionX,positionY,deltaX, deltaY){
+function newBall(positionX,positionY){
+	return newBallWithVector(positionX,positionY,0,0);
+}
+function newBall(initialPosition, initialVelocity){
+	var position = initialPosition;
+	var velocity = initialVelocity || {dx: 0, dy:0}
 	return {
-		x: positionX,
-		y: positionY,
-		dx: deltaX,
-		dy: deltaY
+		position : position,
+		velocity : velocity,
+		tick: function(){
+			position.x += velocity.dx;
+			position.y += velocity.dy;
+			velocity.dy *= friction;
+			velocity.dx *= friction;
+			if(position.x < 0){
+				position.x = 0;
+				velocity.dx = - velocity.dx;
+			}	
+			if(position.y < 0 ){
+				position.y = 0;
+				velocity.dy *= -1;
+			}
+			if(position.y > height-(ballSize)){
+				position.y = height - ballSize;
+				velocity.dy *= -1;
+			}
+			if(position.x > width-(ballSize)){
+				position.x = width - ballSize;
+				velocity.dx *= -1;
+			}
+			balls.forEach( b => {
+				var dx = this.position.x- b.position.x;
+				var dy = this.position.y - b.position.y;
+				var distance = Math.sqrt((dx*dx) + (dy*dy));
+				if( this != b && distance < (ballSize*2) ){
+					console.log("boop: " + distance + "   i:"+i+"  j:"+j);
+					var diffX = balls[j].dx-balls[i].dx;
+					var diffY = balls[j].dy-balls[i].dy;
+					balls[j].dx -= diffX/2;
+					balls[i].dx += diffX/2;
+					balls[j].dy -= diffX/2;
+					balls[i].dy += diffX/2;
+				}
+			});
+		}
 	}
 }
 
@@ -27,10 +66,10 @@ function init(){
 	document.getElementById("c").width = width;
 	document.getElementById("c").height = height;
 	ctx = document.getElementById("c").getContext("2d");
-	balls.push(newBall(50,50));
-	balls.push(newBall(55+ballSize*2,50));
-	balls.push(newBall(60+ballSize*4,50));
-	balls.push(newBallWithVector(100,200, 10,7));
+	balls.push( newBall( {x:50,y:50} ) );
+	balls.push( newBall( {x:55+ballSize*2,y:50} ) );
+	balls.push( newBall( {x:60+ballSize*4,y:50} ) );
+	balls.push( newBall( {x:100,y:200}, {dx:10,dy:7} ) );
 	setInterval(logicUpdate, 16);
 	logicUpdate();
 	renderUpdate();
@@ -50,7 +89,7 @@ function renderUpdate(){
 	ctx.fillRect(0,0, width, height);
 	balls.forEach(function(ball){
 		ctx.beginPath();
-		ctx.arc(ball.x, ball.y, ballSize, 0, 2*Math.PI, false);
+		ctx.arc(ball.position.x, ball.position.y, ballSize, 0, 2*Math.PI, false);
 		ctx.fillStyle = "#fafaff";
 		ctx.fill();
 	});
@@ -59,60 +98,7 @@ function renderUpdate(){
 
 function logicUpdate(){
 	debugUpdate();
-	for(var i=0; i<balls.length; i++){
-		balls[i].x += balls[i].dx;
-		balls[i].y += balls[i].dy;
-		balls[i].dy *= friction;
-		balls[i].dx *= friction;
-		
-		if(balls[i].y+ballSize >= height){
-			balls[i].y = height-ballSize;
-			balls[i].dy = -balls[i].dy*impactEntropy;
-		}
-		if(balls[i].x+ballSize >= width){
-			balls[i].x = width-ballSize;
-			balls[i].dx = -balls[i].dx*impactEntropy;
-		}
-		if(balls[i].y-ballSize <= 0){
-			balls[i].y = ballSize;
-			balls[i].dy = -balls[i].dy*impactEntropy;
-		}
-		if(balls[i].x-ballSize <= 0){
-			balls[i].x = ballSize;
-			balls[i].dx = -balls[i].dx*impactEntropy;
-		}
-		
-		
-		for(var j=0; j<balls.length; j++){
-			
-			var distance = Math.sqrt((balls[i].x - balls[j].x)*(balls[i].x - balls[j].x) + (balls[i].y - balls[j].y)*(balls[i].y - balls[j].y));
-
-			if(distance < (ballSize*2) && i!=j){
-			console.log("boop: " + distance + "   i:"+i+"  j:"+j);
-				//really dumb bounce
-			/*	var jdx = balls[j].dx;
-				var idx = balls[i].dx;
-				var jdy = balls[j].dy;
-				var idy = balls[i].dy;
-				balls[i].dx = balls[i].dx/2;
-				balls[i].dy = balls[i].dy/2;
-				balls[j].dx = balls[j].dx/2;
-				balls[j].dy = balls[j].dy/2;
-				balls[i].dx += jdx/2;
-				balls[i].dy += jdy/2;
-				balls[j].dx += idx/2;
-				balls[j].dy += idy/2;
-			*/
-				// ever so slightly less dumb bounce
-				var diffX = balls[j].dx-balls[i].dx;
-				var diffY = balls[j].dy-balls[i].dy;
-				balls[j].dx -= diffX/2;
-				balls[i].dx += diffX/2;
-				balls[j].dy -= diffX/2;
-				balls[i].dy += diffX/2;
-			}
-		}
-	}
+	balls.forEach( b => b.tick() );
 }
 
 function debugUpdate(){
