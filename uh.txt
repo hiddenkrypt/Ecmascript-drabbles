@@ -1,61 +1,101 @@
 endings
 				
-- is bad end, nobody gets with anybody.
-AB is canon ending, good end. Maybe best end. C is happy for them. 
-AC is neutral or good end. AC get together while B is ready to start dating again
-ABC is secret end, half a joke. Basically AB with C butting in. 
-AC is neutral ish end. maybe not do? 
+ω	-  		bad end, nobody gets with anybody. C gives up, B plans to move away to restart her life. 
+α 	A+B 	'canon' ending, good end. Maybe best end. C is happy for them. 
+β	A+C 	neutral or good end. AC get together while B is ready to start dating again (possibly with a  woman)
+γ	A+B+C 	secret end, half a joke. Basically C creates a harem
+δ	B+C 	doesn't make sense as an end?
 
 
+Primary Characters:
+	A - wingman, lesbian, has a crush on B, wants her to be happy, but thinks B is straight
+	Straightlaced, Femme to androgynous depending on mood, short hair, looks equally good in a suit or a sundress. 
+	Inspiration: Akira from Katawa shoujo, Kanaya, typical male dating sim protags
+	Works at a bakery / confectionary
 
-A - wingman, lesbian, has a crush on B, wants her to be happy, but thinks B is straight,
-B - dater, broken hearted, recently broke up with her boyfriend for cheating on her.  Bi, but has mostly been dating men and her sexuality is not public
-C - tutorial wench kinda annoying but with a good heart. 
+	B - broken hearted, recently broke up with her boyfriend for cheating on her.  
+	Bi, but has mostly been dating men and her sexuality is not public. Normally happy and fun-loving
+	Kinda preppy/cheerleader girl next door everywoman, but has fun with some non-traditional things too
+	Likes "normal" clothes, T-shirt and shorts or pants common.
+	Likes pop music 
+	Inspiration Leijons and Pyropes, typical canon end female dating sim protags
+	Works with A
+	 
+	C - tutorial wench kinda annoying but with a good heart. genderqueer to the max. Unknown birth sex. 
+	A bit of a bon vivant, bit of hedionist. Makes a lot of money, but chooses to look strange. Might be a CEO, might be a laywer or something? 
+	High energy and colorful in looks, attitude, and language. Certainly has a Tumblr. Probably a Homestuck.  
+	Inspiration: Feferi and Barney Stinton's lovechild with clothes by lisa frank
+	Frequents the bakery enough to know all the employees by name. 
 
-A and B work together at a bakery / confectionary. C is a regular, and a friend of sorts. 
 
-
-
+	
+	
 Scene 1A - Bakery
-A is working in the bakery when C shows up to order something stupidly sugary. 
-C notices that B is gone yet again,a nd demands to know what's up. When A breaks the news,
-C *has* to intervene, and convinces A they should both visit B to cheer her up. 
+	A is working in the bakery when C shows up to order something stupidly sugary. 
+	C notices that B is gone yet again,a nd demands to know what's up. When A breaks the news,
+	C *has* to intervene, and convinces A they should both visit B to cheer her up. 
 
 Scene 1B - B's apartment
-B, meanwhile, is watching TV and trying not to cry. (minigame of the 'keep it together' variety. Balance games, or something. )
+	B, meanwhile, is watching TV and trying not to cry. (minigame of the 'keep it together' variety. Balance games, or something. )
+	B's performance determines the difficulty of the next minigame.
 
 
-Scene 2 - B's apartment, that evening
-A and C show up at B's
-light conversation, followed by minigame
-A has to restore B's confidence to level 0. 
-C doesn't help directly, she explains the game and mechanics. This is explained directly in a 4th wall breaking way.
-Implicitly, it's because she wants A to take care of B. 
-	--minigame appears--
-	C: "quick, she's hitting rock bottom or something! Give her a hug and tell her she's pretty!"
-	B: "Why am I the only one doing this? what are you doing?"
-	C: "I'm giving you the tutorial, duh! Now, drop those blocks <game mechanics>"
+Scene 2AB - B's apartment, that evening
+	A and C show up at B's
+	light conversation, followed by minigame
+	A has to restore B's confidence to level 0. 
+	C doesn't help directly, she explains the game and mechanics. This is explained directly in a 4th wall breaking way.
+	Implicitly, it's because she wants A to take care of B. 
+		--minigame appears--
+		C: "quick, she's hitting rock bottom or something! Give her a hug and tell her she's pretty!"
+		B: "Why am I the only one doing this? what are you doing?"
+		C: "I'm giving you the tutorial, duh! Now, drop those blocks <game mechanics>"
 	
-Confidence minigame: Two player playing fast paced puzzles. Tetris, bejewled, dr. mario, yoshi cookie, soemthing. 
-When A does better at the game, it gives B bonuses and desireable advantages. 
-The game is won, either by a specific goal or by a timer or score or whatev. 
-B's confidence returns to level 0, and is ready to start returning. 
-B wants to go out dating again. A isn't sure. C thinks it's a good idea. A agrees to help B, partially as C's insistance. 
+	Confidence minigame: Two player playing fast paced puzzles. Tetris, bejewled, dr. mario, yoshi cookie, soemthing. 
+	When A does better at the game, it gives B bonuses and desireable advantages. 
+	The game is won by an endurance sort of metric. Get enough points, clear enough blocks, with a time limit. 
+	B's performance in the 'keep it together' game determines the goalpost distance.
+	B's confidence returns to level 0, and is ready to start returning. 
+	B wants to go out dating again. A isn't sure. C thinks it's a good idea. A agrees to help B, partially as C's insistance. 
 
-Scene 3A - 
-A is working in the bakery. C comes in to talk with her, leading with "so when are you going to tell B how you feel?"
-A has options for a response:
-Deny: I have no idea what you're talking about! (+1) 
-Deny: What? No, it's not like that (-1)
-A cares about her friendship with B. 
+Scene 3A - Bakery
+	A is working. C comes in to talk with her, leading with "so when are you going to tell B?"
+	A has options for a response:
+	Deny: I have no idea what you're talking about! (+1) 
+		It's pretty obvious that A has a crush on B. C coyingly lets it slide "suuuuurrre"
+	Deny: What? No, it's not like that (-1)
+		C seems a little disappointed. A honestly doesn't think of B like that? Really?
+	A cares about her friendship with B. "Even if I did feel that way about her, I care more about her friendship."
+	C's of the opinion that one can certainly screw around with friends without it ruining anything, but if it's anything more than physical attraction then it's better to get it out in the open. 
+	A shuts that idea down. She'd reiterates that she doesn't feel 'that way', that they're just friends. 
+	C drops the subject... for now. 
 
-Scene 3B - 
-B is out shopping and meets a cute guy over common interests. A date is planned. 
+Scene 3B - A Mall
+	B is out shopping and meets a cute guy wearing a band T-shirt for a local artist she enjoys. 
+	They geek out together. Turns out, the guy is planning on seeing the band next weekend. 
+	He asks her to come, and maybe get coffee after or something. 
+	It's a date. 
 
-Scene 4 - 
-B tells A and C about the Date. C begins "the plan"
+Scene 4 - Bakery
+	B tells A and C about the Date. C begins "the plan". A and C will help prep B for the date
+	The plan for the date is to go to a local punk show, and then to a cafe 
+	A and C will attend the show as well, ready to provide her with an escape if things don't go well. 
+
+----DATE 01 Punk Rock Show----
+Scene 5B:
+	B meets with her date. They chat briefly about what they do for a living, what they like about the music. 
+	B isn't a huge fan of the music, but she loves the energy of a live show.
+Scene 5A:
+	A and C meet up outside the show. They breifly reiterate the plan. (I would like a choice here for A that mmight earn them points with C)
+	
+	Moshpit minigame:
+	Two player pinball. A controls flippers, while B can guide the 'ball'
+
+Scene 6b:
+	B and her date go grab a bite to eat and some drinks at a cafe. She has some conversation options that can make the date go better or go worse
 
 
-
-Scene 90-
+	
+α Scene 90-
 A asks B to go on a date. B has three options, all of them listed as "panic". 
+
