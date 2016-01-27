@@ -49,13 +49,10 @@ function newBall(initialPosition, initialVelocity){
 				var dy = this.position.y - b.position.y;
 				var distance = Math.sqrt((dx*dx) + (dy*dy));
 				if( this != b && distance < (ballSize*2) ){
-					console.log("boop: " + distance + "   i:"+i+"  j:"+j);
-					var diffX = balls[j].dx-balls[i].dx;
-					var diffY = balls[j].dy-balls[i].dy;
-					balls[j].dx -= diffX/2;
-					balls[i].dx += diffX/2;
-					balls[j].dy -= diffX/2;
-					balls[i].dy += diffX/2;
+					console.log("boop: " + distance);
+					var tempV = b.velocity;
+					b.velocity = velocity;
+					velocity = tempV;
 				}
 			});
 		}
