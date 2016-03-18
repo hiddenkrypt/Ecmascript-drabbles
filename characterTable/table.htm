@@ -6,8 +6,7 @@
 
 	table{
 		font-family:courier monospace;
-		font-size:14px;
-		font-weight:bold;
+		font-size:18px;
 		border: 1px black solid;
 	}
 	tr{
@@ -41,21 +40,28 @@
 
 	.hivebent{ 
 		border-color:#320061; 
-		border-width:.25em;
+		border-width:.1em;
 		border-style:solid;
 	}
 	.homestuck{
 		border-color:#32d132; 
-		border-width:.25em; 
+		border-width:.15em; 
 		border-style:solid;
 	} 
 	.housetrap{
-		border-color:#323232; 
-		border-width:.25em; 
+		border-color:#aa3232; 
+		border-width:.1em; 
 		border-style:solid;
 	} 
 </style>
 <script>
+
+var count = 10000;
+var colLength = 16;
+var colNum = 11;
+var colCount = 0;
+
+
 function RGB(r,g,b){
 	return {
 		r:r, 
@@ -102,10 +108,6 @@ var colors = {
 </head>
 <body>
 <script type="text/javascript">
-var count = 4096;
-var colLength = 32;
-var colNum = 11;
-var colCount = 0;
 document.writeln ("<div><table><tr><td>");
 for (var i=0; i<count; i++){
 	if(i != 0 && i%colLength === 0  && colCount != colNum){
@@ -152,31 +154,31 @@ document.writeln ("</td></tr></table></div>");
 <!--  @O!Gu3stWL  -->
 <div>☠☠☠<br>ઠܘઠ <br> ఠ_ఠ <br> ಠ_ಠ <br>ਊnਊ<br>థగథ</div>
 <div>
-<table border = 1>
+<table class="">
 <tr class="rust">		<td>♈</td>	<td>Aradia</td>		<td>Megido</td>	<td>Handmaid</td>	<td>#a10000</td><td>rgb()</td><td>ApocalypseArisen</td></tr>
-<tr class="rust">		<td>♈</td>	<td>Damara</td>		<td>Megido</td>	<td></td>			<td>#a10000</td><td>rgb()</td><td>ApocalypseArisen</td></tr>
+<tr class="rust">		<td>♈</td>	<td>Damara</td>		<td>Megido</td>	<td></td>			<td>#a10000</td><td>rgb()</td><td>-</td></tr>
 <tr class="mud">		<td>♉</td>	<td>Tavros</td>		<td>Nitram</td>	<td>Summoner</td>	<td>#a15000</td><td>rgb()</td><td>adiosToreador</td></tr>
-<tr class="mud">		<td>♉</td>	<td>Rufioh</td>		<td>Nitram</td>	<td></td>			<td>#a15000</td><td>rgb()</td><td>adiosToreador</td></tr>
+<tr class="mud">		<td>♉</td>	<td>Rufioh</td>		<td>Nitram</td>	<td></td>			<td>#a15000</td><td>rgb()</td><td>-</td></tr>
 <tr class="mustard">	<td>♊</td>	<td>Sollux</td>		<td>Captor</td>	<td>Helmsman</td>	<td>#a1a100</td><td>rgb()</td><td>twinArmageddons</td></tr>
-<tr class="mustard">	<td>♊</td>	<td>Mituna</td>		<td>Captor</td>	<td></td>			<td>#a1a100</td><td>rgb()</td><td>twinArmageddons</td></tr>
+<tr class="mustard">	<td>♊</td>	<td>Mituna</td>		<td>Captor</td>	<td></td>			<td>#a1a100</td><td>rgb()</td><td>-</td></tr>
 <tr class="hidden">		<td>♋</td>	<td>Karkat</td>		<td>Vantas</td>	<td>Sufferer</td>	<td>#626262</td><td>rgb()</td><td>carcinoGeneticicist</td></tr>
-<tr class="hidden">		<td>♋</td>	<td>Kankri</td>		<td>Vantas</td>	<td></td>			<td>#626262</td><td>rgb()</td><td>carcinoGeneticicist</td></tr>
+<tr class="hidden">		<td>♋</td>	<td>Kankri</td>		<td>Vantas</td>	<td></td>			<td>#626262</td><td>rgb()</td><td>-</td></tr>
 <tr class="olive">		<td>♌</td>	<td>Nepeta</td>		<td>Leijon</td>	<td>Disciple</td>	<td>#416500</td><td>rgb()</td><td>arsenicCatnip</td></tr>
-<tr class="olive">		<td>♌</td>	<td>Mewlin</td>		<td>Leijon</td>	<td></td>			<td>#416500</td><td>rgb()</td><td>arsenicCatnip</td></tr>
+<tr class="olive">		<td>♌</td>	<td>Mewlin</td>		<td>Leijon</td>	<td></td>			<td>#416500</td><td>rgb()</td><td>-</td></tr>
 <tr class="jade">		<td>♍</td>	<td>Kanaya</td>		<td>Maryam</td>	<td>Dolorosa</td>	<td>#008141</td><td>rgb(0, 129, 65)</td><td>grimAuxiliatrix</td></tr>
-<tr class="jade">		<td>♍</td>	<td>Porrim</td>		<td>Maryam</td>	<td></td>			<td>#008141</td><td>rgb(0, 129, 65)</td><td>grimAuxiliatrix</td></tr>
+<tr class="jade">		<td>♍</td>	<td>Porrim</td>		<td>Maryam</td>	<td></td>			<td>#008141</td><td>rgb(0, 129, 65)</td><td>-</td></tr>
 <tr class="teal">		<td>♎</td>	<td>Terezi</td>		<td>Pyrope</td>	<td>Neophyte</td>	<td>#      </td><td>rgb()</td><td>gallowsCalibrator</td></tr>
-<tr class="teal">		<td>♎</td>	<td>Latula</td>		<td>Pyrope</td>	<td></td>			<td>#      </td><td>rgb()</td><td>gallowsCalibrator</td></tr>
+<tr class="teal">		<td>♎</td>	<td>Latula</td>		<td>Pyrope</td>	<td></td>			<td>#      </td><td>rgb()</td><td>-</td></tr>
 <tr class="cerulean">	<td>♏</td>	<td>Vriska</td>		<td>Serket</td>	<td>Mindfang</td>	<td>#      </td><td>rgb()</td><td>arachnidsGrip</td></tr>
-<tr class="cerulean">	<td>♏</td>	<td>Aranea</td>		<td>Serket</td>	<td></td>			<td>#      </td><td>rgb()</td><td>arachnidsGrip</td></tr>
+<tr class="cerulean">	<td>♏</td>	<td>Aranea</td>		<td>Serket</td>	<td></td>			<td>#      </td><td>rgb()</td><td>-</td></tr>
 <tr class="bloo">		<td>♐</td>	<td>Equius</td>		<td>Zahaak</td>	<td>E%ecutor</td>	<td>#      </td><td>rgb()</td><td>centaursTesticle</td></tr>
-<tr class="bloo">		<td>♐</td>	<td>Horuss</td>		<td>Zahaak</td>	<td></td>			<td>#      </td><td>rgb()</td><td>centaursTesticle</td></tr>
+<tr class="bloo">		<td>♐</td>	<td>Horuss</td>		<td>Zahaak</td>	<td></td>			<td>#      </td><td>rgb()</td><td>-</td></tr>
 <tr class="indigo">		<td>♑</td>	<td>Gamzee</td>		<td>Makara</td>	<td>   GHB  </td>	<td>#      </td><td>rgb()</td><td>terminallyCapricious</td></tr>
-<tr class="indigo">		<td>♑</td>	<td>Kurloz</td>		<td>Makara</td>	<td></td>			<td>#      </td><td>rgb()</td><td>terminallyCapricious</td></tr>
+<tr class="indigo">		<td>♑</td>	<td>Kurloz</td>		<td>Makara</td>	<td></td>			<td>#      </td><td>rgb()</td><td>-</td></tr>
 <tr class="purple">		<td>♒</td>	<td>Eridan</td>		<td>Ampora</td>	<td>Dualscar</td>	<td>#      </td><td>rgb()</td><td>caligulasAquarium</td></tr>
-<tr class="purple">		<td>♒</td>	<td>Cronus</td>		<td>Ampora</td>	<td></td>			<td>#      </td><td>rgb()</td><td>caligulasAquarium</td></tr>
+<tr class="purple">		<td>♒</td>	<td>Cronus</td>		<td>Ampora</td>	<td></td>			<td>#      </td><td>rgb()</td><td>-</td></tr>
 <tr class="tyrian">		<td>♓</td>	<td>Feferi</td>		<td>Peixis</td>	<td>Condesce</td>	<td>#      </td><td>rgb()</td><td>cuttlefishCuller</td></tr>
-<tr class="tyrian">		<td>♓</td>	<td>Meenah</td>		<td>Peixis</td>	<td>??</td>			<td>#      </td><td>rgb()</td><td>cuttlefishCuller</td></tr>
+<tr class="tyrian">		<td>♓</td>	<td>Meenah</td>		<td>Peixis</td>	<td>??</td>			<td>#      </td><td>rgb()</td><td>-</td></tr>
 <tr class="rose">		<td>R</td>	<td>Rose</td>		<td>Lalonde</td><td> Mom </td>		<td>#      </td><td>rgb()</td><td>tentacleTherapist</td></tr>
 <tr class="dave">		<td>D</td>	<td>Dave</td>		<td>Strider</td><td> Bro </td>		<td>#      </td><td>rgb()</td><td>TurntechGodhead</td></tr>
 <tr class="john">		<td>J</td>	<td>John</td>		<td>Egbert</td>	<td> Dad </td>		<td>#      </td><td>rgb()</td><td>ghostlyTrickster (ectoBiologist)</td></tr>
@@ -189,11 +191,11 @@ document.writeln ("</td></tr></table></div>");
 <tr class="caliborn">	<td>?</td>	<td>Caliborn</td>	<td> - </td>	<td> - </td>		<td>#323232</td><td>rgb()</td><td>undyingUmbrage</td></tr>
 </table>
 <table>
-<tr><td> </td>	<th>G</th>								<th>C</th>							<td>A</td>							<td>T</td></tr>
-<tr><td>G</td>	<td class="harley homestuck">J</td>		<td class="teal hivebent">♎</td>	<td class="jade hivebent">♍</td>	<td class="john homestuck">J</td>	</tr>
-<tr><td>C</td>	<td class="hidden hivebent">♋</td>		<td class="tyrian hivebent">♓</td>	<td class="purple hivebent">♒</td>	<td class="bloo hivebent">♐</td></tr>
-<tr><td>A</td>	<td class="cerulean hivebent">♏</td>	<td class="olive hivebent">♌</td>	<td class="rust hivebent">♈</td>	<td class="mud hivebent">♉</td>	</tr>
-<tr><td>T</td>	<td class="dave homestuck">D</td>		<td class="indigo hivebent">♑</td>	<td class="mustard hivebent">♊</td><td class="rose homestuck">R</td>	</tr>
+<tr><td> </td>	<th>G</th>								<th>C</th>							<th>A</th>							<th>T</th></tr>
+<tr><th>G</th>	<td class="harley homestuck">J</td>		<td class="teal hivebent">♎</td>	<td class="jade hivebent">♍</td>	<td class="john homestuck">J</td>	</tr>
+<tr><th>C</th>	<td class="hidden hivebent">♋</td>		<td class="tyrian hivebent">♓</td>	<td class="purple hivebent">♒</td>	<td class="bloo hivebent">♐</td></tr>
+<tr><th>A</th>	<td class="cerulean hivebent">♏</td>	<td class="olive hivebent">♌</td>	<td class="rust hivebent">♈</td>	<td class="mud hivebent">♉</td>	</tr>
+<tr><th>T</th>	<td class="dave homestuck">D</td>		<td class="indigo hivebent">♑</td>	<td class="mustard hivebent">♊</td><td class="rose homestuck">R</td>	</tr>
 </table>
 <table>
 <tr><td> </td><td>T</td><td>G</td><td>T</td><td>G</td></tr>
