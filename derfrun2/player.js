@@ -1,8 +1,8 @@
 //player.js
 "use strict";
 
-var player = (function(startX, startY){
-	var position = { x: startX || core.camera.WIDTH/2, y: startY || core.camera.HEIGHT/2 },
+var player = new (function(startX, startY){
+	var position = { x: startX, y: startY },
 		size = { width: 5, height: 10 },
 		velocity = { 
 			dx: 0, 
@@ -22,8 +22,8 @@ var player = (function(startX, startY){
 		grindLeft: false,
 		grindRight: false
 	};
-return {
-	draw: function( ctx ){
+
+	this.draw = function draw( ctx ){
 		ctx.fillStyle = '#FF0000';
 		ctx.fillRect(position.x, position.y, size.width, size.height);
 		previousPositions.forEach( (p, i) => {
@@ -31,7 +31,7 @@ return {
 			ctx.fillRect(position.x, position.y, size.width, size.height);
 		});
 	}
-	,getTemporalAABB: function getTemporalAABB(){
+	this.getTemporalAABB = function getTemporalAABB(){
 		return{
 			x: Math.min(previousPositions[0].x, position.x),
 			y: Math.min(previousPositions[0].y, position.y),
@@ -39,7 +39,7 @@ return {
 			h: Math.Max(previousPositions[0].y, position.y)+player.size.height
 		}
 	}
-	,tick: function(){
+	this.tick = function tick(){
 		console.log(position);
 		console.log(velocity);
 		previousPositions.push(position);
@@ -56,28 +56,31 @@ return {
 		}
 		velocity.dy += core.physics.gravity;
 	}
-	,jump: function(){
+	this.jump = function jump(){
 		if(!state.inAir){
 			state.inAir = true;
 			velocity.dy = -speed.max.dy*2;
 		}				
 	}
-	,right: function(){          
+	this.right = function right(){          
 		console.log("right");
 		if (velocity.dx+speed.ddx < speed.max.dx){
 			velocity.dx += speed.ddx;
 		}
 	}
-	,left: function(){             
+	this.left = function left(){             
 		console.log("left");
 		if (velocity.dx-speed.ddx > -speed.max.dx){
 			velocity.dx -= speed.ddx;
 		}
 	}
-	,x : ()=>position.x
-	,getY : function(){return position.y}
-	,dx : ()=>velocity.dx
-	,dy : ()=>velocity.dy
-	,inAir :	()=>state.inAir
-}
-})();
+	this.getStats = function getStats(){
+		return {
+			x : position.x,
+			y : position.y,
+			dx : velocity.dx,
+			dy : velocity.dy,
+			state : state
+		};
+	}
+})(core.camera.WIDTH/2, core.camera.HEIGHT/2);
