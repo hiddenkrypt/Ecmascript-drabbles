@@ -10,7 +10,6 @@ function testAverage( method, diceString, expected ){
 	}
 	return ( Math.abs( tot/runs - expected ) < accuracy );
 }
-
 function testRange ( method, diceString, lowBounds, highBounds ){
 	var runs = 100;
 	var roll = method(diceString);
@@ -24,18 +23,16 @@ function testRange ( method, diceString, lowBounds, highBounds ){
 	return (lowBounds <= min && highBounds >= max);
 }
 
-// QUnit.module( "rollEach() output testing", { setup: function(){},teardown: function(){} } );
+function stats( set ){
+	this.max = Math.max.apply(set);
+	this.min = Math.min.apply(set);
+	this.mean = set.reduce((a,b)=>a+b) / set.length;
+	this.stDev = Math.sqrt(set.map(e=>Mean-e).map(e=>e*e).reduce((a,b)=>a+b)/set.length);
+}
+function approximatlyEqual(x, y, accuracy){
+	return Math.abs(x-y) < accuracy; 
+}
 
-// QUnit.test( "results length", function( assert ){
-	// assert.equal( die.rollEach("1d2").rolls.length, 1, "1d2: one die returns one roll" );
-	// assert.equal( die.rollEach("3d2").rolls.length, 3, "3d2: returns 3" );
-	// assert.equal( die.rollEach("10d6").rolls.length, 1, "10d6: returns 10" );
-	// assert.equal( die.rollEach("4d4+1d6+-1d8").length, 6, "4d4+1d6+-1d8: returns 6" );
-// }
-
-// QUnit.test( "results probability", function( assert ){
-
-// }
 
 QUnit.module( "roll() basics", { setup: function(){},teardown: function(){} } );
 QUnit.test( "Constants consistency", function( assert ){
@@ -62,6 +59,7 @@ QUnit.test( "bad format", function( assert ){
 	
 	try{ die.roll("d20"); }
 	catch(e){assert.equal( e.message, "Invalid Dice String Argument: d20", "d20");}
+	
 } );
 
 
@@ -168,3 +166,123 @@ QUnit.test( "Constants consistency", function( assert ){
 	assert.ok( die.d("8+-1", 7), "8 + -1 = 7" );
 	assert.ok( die.d("0+-9", 0+-9), "0 + -9 = -9" );
 } );
+
+QUnit.module( "rollVerbose() basics", { setup: function(){},teardown: function(){} } );
+
+QUnit.test( "results object", function( assert ){
+	var roll,ds,res,dieSize, dieNum;
+	dieSize = 6;
+	dieNum = 15;
+	ds=dieNum+"d"+dieSize; //15d6
+	res = die.rollVerbose(ds);
+	assert.equal(res.roll, ds, ds+": roll string match");
+	assert.equal(res.values.length, dieNum, ds+": values length");
+	
+	dieSize = 1;
+	dieNum = 15;
+	ds=dieNum+"d"+dieSize; //15d1
+	res = die.rollVerbose(ds);
+	assert.equal(res.roll, ds, ds+": roll string match");
+	assert.equal(res.values.length, dieNum, ds+": values length");
+	assert.equal(res.rollResults, "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1", ds+": Roll results");
+	assert.equal(res.total, 15, ds+": expected total 15");
+	assert.equal(res.toString, "Rolled "+ds+" (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1) = 15", ds+": toString");
+	
+	
+	dieSize = 8;
+	dieNum = 1;
+	ds = "8";
+	res = die.rollVerbose(ds);
+	assert.equal(res.roll, ds, ds+": roll string match");
+	assert.equal(res.values.length, dieNum, ds+": values length");
+	assert.equal(res.rollResults, "8", ds+": Roll results");
+	assert.equal(res.total, 8, ds+": expected total 8");
+	assert.equal(res.toString, "Rolled "+ds+" (8) = 8", ds+": toString");
+} );
+
+
+QUnit.test( "constants", function( assert ){
+	var roll,ds,res;
+	
+	ds="6"
+	res = die.rollVerbose(ds);
+	assert.equal(res.roll, ds, ds+": roll string match");
+	assert.equal(res.values.length, 1, ds+": values length");
+	assert.equal(res.total, 6, ds+": expected total 6");
+	assert.equal(res.rollResults, "6", ds+": Roll results");
+	assert.equal(res.toString, "Rolled "+ds+" (6) = 6", ds+": toString");
+	
+	ds="1"
+	res = die.rollVerbose(ds);
+	assert.equal(res.roll, ds, ds+": roll string match");
+	assert.equal(res.values.length, 1, ds+": values length");
+	assert.equal(res.total, 1, ds+": expected total 1");
+	assert.equal(res.rollResults, "1", ds+": Roll results");
+	assert.equal(res.toString, "Rolled "+ds+" (1) = 1", ds+": toString");
+	
+	ds="1+4"
+	res = die.rollVerbose(ds);
+	assert.equal(res.roll, ds, ds+": roll string match");
+	assert.equal(res.values.length, 2, ds+": values length");
+	assert.equal(res.total, 5, ds+": expected total 5");
+	assert.equal(res.rollResults, "1, 4", ds+": Roll results");
+	assert.equal(res.toString, "Rolled "+ds+" (1, 4) = 5", ds+": toString");
+	
+	ds="1-4"
+	res = die.rollVerbose(ds);
+	assert.equal(res.roll, ds, ds+": roll string match");
+	assert.equal(res.values.length, 2, ds+": values length");
+	assert.equal(res.total, -3, ds+": expected total -3");
+	assert.equal(res.rollResults, "1, -4", ds+": Roll results");
+	assert.equal(res.toString, "Rolled "+ds+" (1, -4) = -3", ds+": toString");
+
+});
+
+
+QUnit.module( "rollVerbose() statistic analysis", { setup: function(){}, teardown: function(){} });
+QUnit.test( "Single Die statistics", function(assert){
+
+	var ds, results, rolls, expected;
+	
+	ds="1d6";
+	expected = { max: 6, min: 1, mean: 3.5, stDev: Math.sqrt(Math.pow(6-1+1,2)-1/12) };
+	rolls = [];
+	for(let i=0; i < 10000; i++){
+		rolls.push(die.rollVerbose(ds).total);
+	}
+	results = new stats(rolls.reduce((a,b)=> a.concat(b)));
+	assert.equal( results.max, expected.max, ds+" max" );
+	assert.equal( results.min, expected.min, ds+" min" );
+	assert.ok(approximatlyEqual(results.mean, expected.mean, .01), ds+" Mean");
+	assert.ok(approximatlyEqual(results.stDev, expected.stDev, .1), ds+" Mean");
+	
+		
+	ds="1d20";
+	expected = { max: 20, min: 1, mean: 10.5, stDev: Math.sqrt(Math.pow(20-1+1,2)-1/12) };
+	rolls = [];
+	for(let i=0; i < 10000; i++){
+		rolls.push(die.rollVerbose(ds).total);
+	}
+	results = new stats(rolls.reduce((a,b)=> a.concat(b)));
+	assert.equal( results.max, expected.max, ds+" max" );
+	assert.equal( results.min, expected.min, ds+" min" );
+	assert.ok(approximatlyEqual(results.mean, expected.mean, .01), ds+" Mean");
+	assert.ok(approximatlyEqual(results.stDev, expected.stDev, .1), ds+" Mean");
+	
+		
+		
+	ds="1d100";
+	expected = { max: 100, min: 1, mean: 50.5, stDev: Math.sqrt(Math.pow(100-1+1,2)-1/12) };
+	rolls = [];
+	for(let i=0; i < 10000; i++){
+		rolls.push(die.rollVerbose(ds).total);
+	}
+	results = new stats(rolls.reduce((a,b)=> a.concat(b)));
+	assert.equal( results.max, expected.max, ds+" max" );
+	assert.equal( results.min, expected.min, ds+" min" );
+	assert.ok(approximatlyEqual(results.mean, expected.mean, .01), ds+" Mean");
+	assert.ok(approximatlyEqual(results.stDev, expected.stDev, .1), ds+" Mean");
+	
+	
+
+});
