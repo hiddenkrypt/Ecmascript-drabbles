@@ -88,18 +88,15 @@ var core = new (function(){
 			ctx.fillRect(x,y,w,h);
 		};
 		this.collision = function(player){
-			var playerTemporalAABB = {
-				x: Math.min(player.previousPosition().x, player.position.x),
-				y: Math.min(player.previousPosition().y, player.position.y),
-				w: Math.Max(player.previousPosition().x, player.position.x)+player.size.width
-				h: Math.Max(player.previousPosition().y, player.position.y)+player.size.height
-			};
-			if(
-				
-			)
+			var playerTemporalAABB = player.getTemporalAABB();
+			if(    x + w > playerTemporalAABB.x
+				&& x     < playerTemporalAABB.x + playerTemporalAABB.w
+				&& y + h > playerTemporalAABB.y 
+				&& y     < playerTemporalAABB.y + playerTemporalAABB.h){
+					
+			}
 		}
 	}
-
 	function loadTerrain(){
 		terrain.push( new TerrainPiece(5,5,15,15));
 		terrain.push( new TerrainPiece(0, 0, 2, core.camera.HEIGHT) ); //left

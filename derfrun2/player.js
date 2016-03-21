@@ -31,6 +31,14 @@ return {
 			ctx.fillRect(position.x, position.y, size.width, size.height);
 		});
 	}
+	,getTemporalAABB: function getTemporalAABB(){
+		return{
+			x: Math.min(previousPositions[0].x, position.x),
+			y: Math.min(previousPositions[0].y, position.y),
+			w: Math.Max(previousPositions[0].x, position.x)+player.size.width,
+			h: Math.Max(previousPositions[0].y, position.y)+player.size.height
+		}
+	}
 	,tick: function(){
 		console.log(position);
 		console.log(velocity);
