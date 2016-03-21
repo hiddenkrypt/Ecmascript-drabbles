@@ -3,7 +3,7 @@
 var core = new (function(){	
 	this.physics = {
 		friction: 0.8,
-		gravity: 0.098,
+		gravity: .98,
 		airfriction: .9999
 	};
 	this.camera = {
@@ -32,7 +32,7 @@ var core = new (function(){
 		setInterval(Update, 1000/30);
 		renderUpdate();
 	}
-
+this.u = Update
 	function Update(){
 		eventUpdate();
 		logicUpdate();
@@ -52,8 +52,21 @@ var core = new (function(){
 	function logicUpdate(){
 		player.tick();
 		terrain.forEach(e=>{
-			e.collision(player);
+			collision(player, e);
 		})
+	}
+	var butt=  true;
+	function collision(player, box){
+		var playerZone = player.getTemporalAABB();
+		
+		var footBelowBoxTop 	= box.y < playerZone.y + playerZone.h;
+		var headAboveBoxBottom	= box.y + box.h > playerZone.y ;
+		var leftBeforeBoxRight	= box.x + box.w > playerZone.x;
+		var rightPastBoxLeft 	= box.x < playerZone.x + playerZone.w;
+		
+		if(footBelowBoxTop && headAboveBoxBottom && leftBeforeBoxRight && rightPastBoxLeft){
+			player.collide(box); //fine grained collision response	
+		}
 	}
 	function eventUpdate(){
 		if (keys[key.UP] || keys[key.SPACE]) { // up arrow, space
@@ -72,36 +85,28 @@ var core = new (function(){
 		}
 	}
 	function debugUpdate(){
-		document.getElementById( "debug1" ).innerHTML = "X: "+Math.floor(player.x()) + "  DX: "+Math.floor(player.dx());
-		document.getElementById( "debug2" ).innerHTML = "Y: "+Math.floor(player.getY()) + "  DY: "+Math.floor(player.dy());
-		document.getElementById( "debug3" ).innerHTML = "inAir: "+player.inAir();
+		document.getElementById( "debug1" ).innerHTML = "X: "+Math.floor(player.getStats().x) + "  DX: "+Math.floor(player.getStats().dx);
+		document.getElementById( "debug2" ).innerHTML = "Y: "+Math.floor(player.getStats().y) + "  DY: "+Math.floor(player.getStats().dy);
+		document.getElementById( "debug3" ).innerHTML = "inAir: "+player.getStats().state.inAir;
 		document.getElementById( "debug4" ).innerHTML = "collide:  ";
 	}
 
 	function TerrainPiece(inX,inY,inW,inH){
-		var x = inX,
-			y = inY,
-			w = inW,
-			h = inH;
+		this.x = inX,
+		this.y = inY,
+		this.w = inW,
+		this.h = inH;
 		this.draw = function(ctx){
 			ctx.fillStyle = "#323232";
-			ctx.fillRect(x,y,w,h);
+			ctx.fillRect(this.x,this.y,this.w,this.h);
 		};
-		this.collision = function(player){
-			var playerTemporalAABB = player.getTemporalAABB();
-			if(    x + w > playerTemporalAABB.x
-				&& x     < playerTemporalAABB.x + playerTemporalAABB.w
-				&& y + h > playerTemporalAABB.y 
-				&& y     < playerTemporalAABB.y + playerTemporalAABB.h){
-					
-			}
-		}
 	}
 	function loadTerrain(){
-		terrain.push( new TerrainPiece(5,5,15,15));
+		terrain.push( new TerrainPiece(5,5,15,15) );
 		terrain.push( new TerrainPiece(0, 0, 2, core.camera.HEIGHT) ); //left
 		terrain.push( new TerrainPiece(0, 0, core.camera.WIDTH, 2) ); //ceiling
 		terrain.push( new TerrainPiece( core.camera.WIDTH-2, 0, 3, core.camera.HEIGHT) );//right
 		terrain.push( new TerrainPiece( -1, core.camera.HEIGHT-10, core.camera.WIDTH+1, 10) ); // floor
+		terrain.push( new TerrainPiece( -1, core.camera.HEIGHT-30,30,30) );
 	};	
 })();
