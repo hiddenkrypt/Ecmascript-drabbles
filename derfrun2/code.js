@@ -2,7 +2,7 @@
 
 var core = new (function(){	
 	this.physics = {
-		friction: 0.8,
+		friction: 0.60,
 		gravity: .98,
 		airfriction: .9999
 	};
@@ -65,6 +65,7 @@ this.u = Update
 		var rightPastBoxLeft 	= box.x < playerZone.x + playerZone.w;
 		
 		if(footBelowBoxTop && headAboveBoxBottom && leftBeforeBoxRight && rightPastBoxLeft){
+			console.log("collision!");
 			player.collide(box); //fine grained collision response	
 		}
 	}
@@ -107,6 +108,10 @@ this.u = Update
 		terrain.push( new TerrainPiece(0, 0, core.camera.WIDTH, 2) ); //ceiling
 		terrain.push( new TerrainPiece( core.camera.WIDTH-2, 0, 3, core.camera.HEIGHT) );//right
 		terrain.push( new TerrainPiece( -1, core.camera.HEIGHT-10, core.camera.WIDTH+1, 10) ); // floor
-		terrain.push( new TerrainPiece( -1, core.camera.HEIGHT-30,30,30) );
+		terrain.push( new TerrainPiece( -1, core.camera.HEIGHT-60,30,30) );
+		terrain.push( new TerrainPiece( 100, core.camera.HEIGHT-45,20,20) );
+		terrain.push( new TerrainPiece( 100, core.camera.HEIGHT-85,20,20) );
+		terrain.push( new TerrainPiece( 100, core.camera.HEIGHT-125,20,20) );
+		terrain.push( new TerrainPiece( 100, core.camera.HEIGHT-165,20,20) );
 	};	
 })();

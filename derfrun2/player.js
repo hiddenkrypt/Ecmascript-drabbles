@@ -9,7 +9,7 @@ var player = new (function(startX, startY){
 			dy: 0
 		},
 		speed = {	
-			ddx:1,
+			ddx:2,
 			max: {
 				dx:5,
 				dy:5
@@ -61,14 +61,12 @@ var player = new (function(startX, startY){
 			velocity.dy = -speed.max.dy*2;
 		}				
 	};
-	this.right = function right(){          
-		console.log("right");
+	this.right = function right(){    
 		if (velocity.dx+speed.ddx < speed.max.dx){
 			velocity.dx += speed.ddx;
 		}
 	};
-	this.left = function left(){             
-		console.log("left");
+	this.left = function left(){      
 		if (velocity.dx-speed.ddx > -speed.max.dx){
 			velocity.dx -= speed.ddx;
 		}
@@ -82,11 +80,33 @@ var player = new (function(startX, startY){
 			state : state
 		};
 	};
+	function hitTop(box){ 
+		return (previousPositions[0].y+size.height) < box.y 
+			&& position.y+size.height >= box.y;
+	} 
+	function hitLeft(box){ return (previousPositions[0].x+size.width) < box.x && (position.x+size.width) >= box.x;} 
+	function hitRight(box){ return previousPositions[0].x >= (box.x+box.w) && position.x < (box.x+box.w);} 
+	function hitBottom(box){ return previousPositions[0].y >= (box.y+box.h) && position.y < (box.y+box.h);} 
 	this.collide = function collide(box){
-		if(position.y+size.height >= box.y && previousPositions[0].y+size.height <= box.y){
+		if(hitTop(box)){
 			velocity.dy = 0; 
-			position.y = box.y - size.height;
+			position.y = box.y - size.height-.001;
 			state.inAir = false;
+		}
+		if(hitRight(box)){
+			console.log("R");
+			velocity.dx = 0;
+			position.x = box.x+box.w+.001
+		}
+		if(hitLeft(box)){
+			console.log("L");
+			velocity.dx = 0;
+			position.x = box.x - size.width-.001;
+		}
+		if(hitBottom(box)){
+			console.log("B");
+			velocity.dy = 0;
+			position.y = box.y + box.h+.001
 		}
 	};
 })(core.camera.WIDTH/2, core.camera.HEIGHT/2);
