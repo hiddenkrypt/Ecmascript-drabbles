@@ -9,10 +9,10 @@ var player = new (function(startX, startY){
 			dy: 0
 		},
 		speed = {	
-			ddx:2,
+			ddx:.5,
 			max: {
-				dx:5,
-				dy:5
+				dx:2.5,
+				dy:1.4
 			}
 		};
 	var previousPositions = [];
@@ -24,12 +24,12 @@ var player = new (function(startX, startY){
 	};
 
 	this.draw = function draw( ctx ){
+		previousPositions.forEach( (p, i) => {
+			ctx.fillStyle = "rgba(0,0,0," + 1/(i+2) + ")";
+			ctx.fillRect(p.x, p.y, size.width, size.height);
+		});
 		ctx.fillStyle = '#FF0000';
 		ctx.fillRect(position.x, position.y, size.width, size.height);
-		previousPositions.forEach( (p, i) => {
-			ctx.fillStyle = "rgba(255,0,0," + i/previousPositions.length + ")";
-			ctx.fillRect(position.x, position.y, size.width, size.height);
-		});
 	};
 	this.getTemporalAABB = function getTemporalAABB(){
 		return{
@@ -41,7 +41,7 @@ var player = new (function(startX, startY){
 	};
 	this.tick = function tick(){
 		previousPositions.unshift(position);
-		if(previousPositions.length>5){previousPositions.pop();}
+		if(previousPositions.length>20){previousPositions.pop();}
 		position = {
 			x: position.x + velocity.dx,
 			y: position.y + velocity.dy
@@ -62,12 +62,16 @@ var player = new (function(startX, startY){
 		}				
 	};
 	this.right = function right(){    
-		if (velocity.dx+speed.ddx < speed.max.dx){
+		if(state.inAir){
+			velocity.dx += speed.ddx/5;
+		} else if (velocity.dx+speed.ddx < speed.max.dx){
 			velocity.dx += speed.ddx;
 		}
 	};
 	this.left = function left(){      
-		if (velocity.dx-speed.ddx > -speed.max.dx){
+		if(state.inAir){
+			velocity.dx -= speed.ddx/5;
+		} else if (velocity.dx-speed.ddx > -speed.max.dx){
 			velocity.dx -= speed.ddx;
 		}
 	};

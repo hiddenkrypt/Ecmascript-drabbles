@@ -2,8 +2,8 @@
 
 var core = new (function(){	
 	this.physics = {
-		friction: 0.60,
-		gravity: .98,
+		friction: .8,
+		gravity: .098,
 		airfriction: .9999
 	};
 	this.camera = {
@@ -29,7 +29,7 @@ var core = new (function(){
 		window.addEventListener( "keydown", function( e ){ keys[e.keyCode] = true; } );
 		window.addEventListener( "keyup",   function( e ){ keys[e.keyCode] = false; } );
 		
-		setInterval(Update, 1000/30);
+		setInterval(Update, 1000/60);
 		renderUpdate();
 	}
 this.u = Update
