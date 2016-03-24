@@ -32,14 +32,15 @@ var core = new (function(){
 		window.addEventListener( "keyup",   function( e ){ keys[e.keyCode] = false; } );
 		
 		setInterval(Update, 1000/60);
+		setInterval(function(){core.camera.x+=2}, 1000);
 		renderUpdate();
 	}
-this.u = Update
 	function Update(){
 		eventUpdate();
 		logicUpdate();
 		debugUpdate();
 	}
+	this.u = Update // TODO: remove or lock down to debug mode
 
 	function renderUpdate(){
 		ctx.fillStyle = "#ffffff";
