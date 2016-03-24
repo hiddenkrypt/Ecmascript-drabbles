@@ -7,6 +7,8 @@ var core = new (function(){
 		airfriction: .9999
 	};
 	this.camera = {
+		x:0,
+		y:0,
 		WIDTH: 300,
 		HEIGHT: 200
 	};
@@ -43,9 +45,9 @@ this.u = Update
 		ctx.fillStyle = "#ffffff";
 		ctx.fillRect( 0, 0, core.camera.WIDTH, core.camera.HEIGHT );
 		terrain.forEach( function( piece ){
-			piece.draw(ctx);
+			piece.draw(ctx, core.camera);
 		});
-		player.draw(ctx);
+		player.draw(ctx, core.camera);
 		requestAnimationFrame(renderUpdate);
 	}
 
@@ -55,7 +57,6 @@ this.u = Update
 			collision(player, e);
 		})
 	}
-	var butt=  true;
 	function collision(player, box){
 		var playerZone = player.getTemporalAABB();
 		
@@ -65,7 +66,6 @@ this.u = Update
 		var rightPastBoxLeft 	= box.x < playerZone.x + playerZone.w;
 		
 		if(footBelowBoxTop && headAboveBoxBottom && leftBeforeBoxRight && rightPastBoxLeft){
-			console.log("collision!");
 			player.collide(box); //fine grained collision response	
 		}
 	}
@@ -78,10 +78,10 @@ this.u = Update
 		} else{
 			jumpReleased = true;
 		}
-		if (keys[39]) {// right arrow
+		if (keys[key.RIGHT]) {
 			player.right();
 		}          
-		if (keys[37]) { // left arrow                  
+		if (keys[key.LEFT]) {                 
 			player.left();
 		}
 	}
@@ -97,9 +97,9 @@ this.u = Update
 		this.y = inY,
 		this.w = inW,
 		this.h = inH;
-		this.draw = function(ctx){
+		this.draw = function(ctx,camera){
 			ctx.fillStyle = "#323232";
-			ctx.fillRect(this.x,this.y,this.w,this.h);
+			ctx.fillRect(this.x-camera.x,this.y-camera.y,this.w,this.h);
 		};
 	}
 	function loadTerrain(){
