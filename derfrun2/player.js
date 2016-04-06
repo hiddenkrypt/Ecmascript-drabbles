@@ -1,7 +1,7 @@
 //player.js
 "use strict";
 
-var player = new (function(startX, startY){
+function Player(startX, startY, physics){
 	var position = { x: startX, y: startY },
 		size = { width: 5, height: 10 },
 		velocity = { 
@@ -9,7 +9,7 @@ var player = new (function(startX, startY){
 			dy: 0
 		},
 		speed = {	
-			ddx:.5,
+			ddx:.3,
 			max: {
 				dx:2.5,
 				dy:1.4
@@ -47,13 +47,13 @@ var player = new (function(startX, startY){
 			y: position.y + velocity.dy
 		};
 		if(state.inAir){
-			velocity.dx *= core.physics.airfriction;
-			velocity.dy *= core.physics.airfriction;
+			velocity.dx *= physics.airfriction;
+			velocity.dy *= physics.airfriction;
 		}
 		else{
-			velocity.dx *= core.physics.friction;
+			velocity.dx *= physics.friction;
 		}
-		velocity.dy += core.physics.gravity;
+		velocity.dy += physics.gravity;
 	};
 	this.jump = function jump(){
 		if(!state.inAir){
@@ -62,13 +62,13 @@ var player = new (function(startX, startY){
 		}				
 	};
 	this.right = function right(){    
-		if (velocity.dx+speed.ddx < speed.max.dx&& !state.inAir){
-			velocity.dx += speed.ddx;
+		if (velocity.dx+speed.ddx < speed.max.dx ){
+			velocity.dx += state.inAir? speed.ddx*.7 : speed.ddx;
 		}
 	};
 	this.left = function left(){      
-		if (velocity.dx-speed.ddx > -speed.max.dx && !state.inAir){
-			velocity.dx -= speed.ddx;
+		if (velocity.dx-speed.ddx > -speed.max.dx ){
+			velocity.dx -=  state.inAir? speed.ddx*.7 : speed.ddx;
 		}
 	};
 	this.getStats = function getStats(){
@@ -84,9 +84,18 @@ var player = new (function(startX, startY){
 		return (previousPositions[0].y+size.height) < box.y 
 			&& position.y+size.height >= box.y;
 	} 
-	function hitLeft(box){ return (previousPositions[0].x+size.width) < box.x && (position.x+size.width) >= box.x;} 
-	function hitRight(box){ return previousPositions[0].x >= (box.x+box.w) && position.x < (box.x+box.w);} 
-	function hitBottom(box){ return previousPositions[0].y >= (box.y+box.h) && position.y < (box.y+box.h);} 
+	function hitLeft(box){ 
+		return (previousPositions[0].x+size.width) < box.x 
+			&& (position.x+size.width) >= box.x;
+	} 
+	function hitRight(box){ 
+		return previousPositions[0].x >= (box.x+box.w) 
+			&& position.x < (box.x+box.w);
+	} 
+	function hitBottom(box){ 
+		return previousPositions[0].y >= (box.y+box.h) 
+			&& position.y < (box.y+box.h);
+	} 
 	this.collide = function collide(box){
 		if(hitTop(box)){
 			velocity.dy = 0; 
@@ -106,4 +115,4 @@ var player = new (function(startX, startY){
 			position.y = box.y + box.h + .001
 		}
 	};
-})(core.camera.WIDTH/2, core.camera.HEIGHT/2);
+};

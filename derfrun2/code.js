@@ -1,38 +1,42 @@
 "use strict";
 
 var core = new (function(){	
-	this.physics = {
-		friction: .8,
-		gravity: .098,
-		airfriction: .9999
-	};
-	this.camera = {
+	var player = {};
+	var	canvas = {},
+		ctx = {},
+		keys = [],
+		terrain = [],
+		jumpReleased = true;
+	var camera = {
 		x:0,
 		y:0,
 		WIDTH: 300,
 		HEIGHT: 200
 	};
-	var	canvas = {},
-		ctx = {};
-	
-	var keys = [],
-		terrain = [],
-		jumpReleased = true;
 
-	var physics = this.physics;
-	this.screen = screen;
+	 var physics = {
+		friction: .8,
+		gravity: .098,
+		airfriction: 1
+	};
+	Object.freeze(physics);
+	
 	this.init = function(){
+		player = new Player( camera.HEIGHT/2, camera.WIDTH/2, physics); 
 		canvas = document.getElementById( 'c' );
 		ctx = canvas.getContext( "2d" );
-		canvas.style.width = canvas.width = core.camera.WIDTH;
-		canvas.style.height = canvas.height = core.camera.HEIGHT;
+		canvas.style.width = canvas.width = camera.WIDTH;
+		canvas.style.height = canvas.height = camera.HEIGHT;
 		loadTerrain();
 		
 		window.addEventListener( "keydown", function( e ){ keys[e.keyCode] = true; } );
 		window.addEventListener( "keyup",   function( e ){ keys[e.keyCode] = false; } );
 		
-		setInterval(Update, 1000/60);
-		setInterval(function(){core.camera.x+=2}, 1000);
+		if(!DEBUG_TICK_OFF){
+			setInterval( Update, 1000/60 );
+		}
+		
+		//setInterval( function(){camera.x+=2}, 1000 );
 		renderUpdate();
 	}
 	function Update(){
@@ -40,15 +44,18 @@ var core = new (function(){
 		logicUpdate();
 		debugUpdate();
 	}
-	this.u = Update // TODO: remove or lock down to debug mode
-
+	this.u = function(){
+		if( DEBUG ){
+			Update();
+		}
+	}
 	function renderUpdate(){
 		ctx.fillStyle = "#ffffff";
-		ctx.fillRect( 0, 0, core.camera.WIDTH, core.camera.HEIGHT );
+		ctx.fillRect( 0, 0, camera.WIDTH, camera.HEIGHT );
 		terrain.forEach( function( piece ){
-			piece.draw(ctx, core.camera);
+			piece.draw(ctx, camera);
 		});
-		player.draw(ctx, core.camera);
+		player.draw(ctx, camera);
 		requestAnimationFrame(renderUpdate);
 	}
 
@@ -105,14 +112,14 @@ var core = new (function(){
 	}
 	function loadTerrain(){
 		terrain.push( new TerrainPiece(5,5,15,15) );
-		terrain.push( new TerrainPiece(0, 0, 2, core.camera.HEIGHT) ); //left
-		terrain.push( new TerrainPiece(0, 0, core.camera.WIDTH, 2) ); //ceiling
-		terrain.push( new TerrainPiece( core.camera.WIDTH-2, 0, 3, core.camera.HEIGHT) );//right
-		terrain.push( new TerrainPiece( -1, core.camera.HEIGHT-10, core.camera.WIDTH+1, 10) ); // floor
-		terrain.push( new TerrainPiece( -1, core.camera.HEIGHT-60,30,30) );
-		terrain.push( new TerrainPiece( 100, core.camera.HEIGHT-45,20,20) );
-		terrain.push( new TerrainPiece( 100, core.camera.HEIGHT-85,20,20) );
-		terrain.push( new TerrainPiece( 100, core.camera.HEIGHT-125,20,20) );
-		terrain.push( new TerrainPiece( 100, core.camera.HEIGHT-165,20,20) );
+		terrain.push( new TerrainPiece(0, 0, 2, camera.HEIGHT) ); //left
+		terrain.push( new TerrainPiece(0, 0, camera.WIDTH, 2) ); //ceiling
+		terrain.push( new TerrainPiece( camera.WIDTH-2, 0, 3, camera.HEIGHT) );//right
+		terrain.push( new TerrainPiece( -1, camera.HEIGHT-10, camera.WIDTH+1, 10) ); // floor
+		terrain.push( new TerrainPiece( -1, camera.HEIGHT-60,30,30) );
+		terrain.push( new TerrainPiece( 100, camera.HEIGHT-45,20,20) );
+		terrain.push( new TerrainPiece( 100, camera.HEIGHT-85,20,20) );
+		terrain.push( new TerrainPiece( 100, camera.HEIGHT-125,20,20) );
+		terrain.push( new TerrainPiece( 100, camera.HEIGHT-165,20,20) );
 	};	
 })();
